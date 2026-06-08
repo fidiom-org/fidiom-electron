@@ -1,23 +1,25 @@
+export type FinanceMode = 'personal' | 'business'
+
 export interface DashboardPeriod {
   month: number
   year: number
 }
 
 export interface DashboardSummary {
-  activeModels: number
-  inferences: number
-  avgLatencyMs: number
-  storageGb: number
+  operatingFunds: number
+  investing: number
+  debt: number
+  netWorth: number
 }
 
-export interface MonthlyOverview {
-  usagePercent: number
+export interface BudgetOverview {
+  spentPercent: number
   label: string
 }
 
-export interface MonthlyInferencePoint {
+export interface ExpensePoint {
   period: string
-  count: number
+  amount: number
 }
 
 export interface DistributionSlice {
@@ -25,13 +27,41 @@ export interface DistributionSlice {
   value: number
 }
 
+export interface PeriodComparison {
+  currentLabel: string
+  previousLabel: string
+  currentTotal: number
+  previousTotal: number
+  changePercent: number
+}
+
+export interface TopCategory {
+  name: string
+  amount: number
+  sharePercent: number
+}
+
+export interface SpendingAnomaly {
+  id: string
+  description: string
+  amount: number
+  severity: 'low' | 'medium' | 'high'
+}
+
+export interface RunwayInfo {
+  monthsRemaining: number
+  monthlyBurn: number
+  cashOnHand: number
+}
+
 export interface DashboardData {
   summary: DashboardSummary
   lastUpdated: string
-  overview: MonthlyOverview
-  monthlyInferences: MonthlyInferencePoint[]
-  modelUsage: DistributionSlice[]
-  storageBreakdown: DistributionSlice[]
-  inferenceTypes: DistributionSlice[]
-  resourceUsage: DistributionSlice[]
+  budgetOverview: BudgetOverview
+  expensesOverTime: ExpensePoint[]
+  expensesByCategory: DistributionSlice[]
+  periodComparison: PeriodComparison
+  topCategories: TopCategory[]
+  anomalies: SpendingAnomaly[]
+  runway: RunwayInfo | null
 }

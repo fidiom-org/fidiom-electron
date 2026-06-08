@@ -1,5 +1,5 @@
-import type { DashboardData, DashboardPeriod } from '../model/types'
+import type { DashboardData, DashboardPeriod, FinanceMode } from '../model/types'
 
 export interface DashboardApi {
-  getData: (period: DashboardPeriod) => Promise<DashboardData>
+  getData: (period: DashboardPeriod, mode: FinanceMode) => Promise<DashboardData>
 }

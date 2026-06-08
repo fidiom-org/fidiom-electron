@@ -1,5 +1,5 @@
 import type { DashboardApi } from './dashboard-api'
-import type { DashboardData, DashboardPeriod } from '../model/types'
+import type { DashboardData, DashboardPeriod, FinanceMode } from '../model/types'
 
 function periodSeed(period: DashboardPeriod): number {
   return period.year * 12 + period.month
@@ -23,49 +23,104 @@ function recentMonths(period: DashboardPeriod, count: number): DashboardPeriod[]
   return months
 }
 
-function createMockDashboardData(period: DashboardPeriod): DashboardData {
+function previousPeriod(period: DashboardPeriod): DashboardPeriod {
+  let month = period.month - 1
+  let year = period.year
+  if (month <= 0) {
+    month = 12
+    year -= 1
+  }
+  return { month, year }
+}
+
+function monthlyExpenseTotal(period: DashboardPeriod, mode: FinanceMode): number {
   const seed = periodSeed(period)
-  const scale = 0.75 + pseudo(seed, 1) * 0.5
+  const base = mode === 'business' ? 18000 : 3200
+  return Math.round(base + seed * 47 + pseudo(seed, 5) * (mode === 'business' ? 8000 : 1800))
+}
+
+function createMockDashboardData(period: DashboardPeriod, mode: FinanceMode): DashboardData {
+  const seed = periodSeed(period)
+  const isBusiness = mode === 'business'
+  const operatingFunds = Math.round(
+    (isBusiness ? 42000 : 9200) + pseudo(seed, 1) * (isBusiness ? 25000 : 6000)
+  )
+  const investing = Math.round(pseudo(seed, 2) * (isBusiness ? 120000 : 18000))
+  const debt = -Math.round(
+    (isBusiness ? 85000 : 12000) + pseudo(seed, 3) * (isBusiness ? 40000 : 8000)
+  )
+  const netWorth = operatingFunds + investing + debt
+
+  const currentTotal = monthlyExpenseTotal(period, mode)
+  const prev = previousPeriod(period)
+  const previousTotal = monthlyExpenseTotal(prev, mode)
+  const changePercent = Math.round(((currentTotal - previousTotal) / previousTotal) * 100)
+
+  const personalCategories = ['Groceries', 'Transport', 'Utilities', 'Entertainment', 'Health']
+  const businessCategories = ['Payroll', 'SaaS', 'Marketing', 'Office', 'Contractors']
+  const categories = isBusiness ? businessCategories : personalCategories
+
+  const categorySlices = categories.map((name, i) => ({
+    name,
+    value: Math.round(currentTotal * (0.12 + pseudo(seed, 20 + i) * 0.18))
+  }))
+
+  const sortedCategories = [...categorySlices].sort((a, b) => b.value - a.value)
+  const topCategories = sortedCategories.slice(0, 4).map((c) => ({
+    name: c.name,
+    amount: c.value,
+    sharePercent: Math.round((c.value / currentTotal) * 100)
+  }))
 
   return {
     summary: {
-      activeModels: 2 + (seed % 3),
-      inferences: Math.round((6000 + seed * 211) * scale),
-      avgLatencyMs: Math.round(110 + pseudo(seed, 2) * 90),
-      storageGb: Math.round((1.6 + pseudo(seed, 3) * 1.4) * 10) / 10
+      operatingFunds,
+      investing,
+      debt,
+      netWorth
     },
     lastUpdated: `${period.year}-${String(period.month).padStart(2, '0')}-07`,
-    overview: {
-      usagePercent: Math.round(35 + pseudo(seed, 4) * 55),
-      label: 'Current'
+    budgetOverview: {
+      spentPercent: Math.round(40 + pseudo(seed, 4) * 45),
+      label: 'Budget used'
     },
-    monthlyInferences: recentMonths(period, 6).map((m, i) => ({
+    expensesOverTime: recentMonths(period, 6).map((m) => ({
       period: `${m.month}/${m.year}`,
-      count: Math.round((400 + seed * 17 + i * 320) * (0.85 + pseudo(seed, 10 + i) * 0.3))
+      amount: monthlyExpenseTotal(m, mode)
     })),
-    modelUsage: [
-      { name: 'llama-3.2-1b', value: Math.round(40 + pseudo(seed, 20) * 30) },
-      { name: 'phi-3-mini', value: Math.round(20 + pseudo(seed, 21) * 25) },
-      { name: 'qwen2.5-0.5b', value: Math.round(10 + pseudo(seed, 22) * 20) }
+    expensesByCategory: categorySlices,
+    periodComparison: {
+      currentLabel: `${period.month}/${period.year}`,
+      previousLabel: `${prev.month}/${prev.year}`,
+      currentTotal,
+      previousTotal,
+      changePercent
+    },
+    topCategories,
+    anomalies: [
+      {
+        id: '1',
+        description: isBusiness ? 'Payroll 22% above average' : 'Groceries spike detected',
+        amount: Math.round(currentTotal * 0.18),
+        severity: pseudo(seed, 70) > 0.6 ? 'high' : 'medium'
+      },
+      {
+        id: '2',
+        description: isBusiness ? 'SaaS renewal cluster' : 'Unusual transport spending',
+        amount: Math.round(currentTotal * 0.09),
+        severity: 'low'
+      }
     ],
-    storageBreakdown: [
-      { name: 'Encrypted DB', value: Math.round(30 + pseudo(seed, 30) * 15) },
-      { name: 'Model weights', value: Math.round(40 + pseudo(seed, 31) * 20) },
-      { name: 'Chat cache', value: Math.round(10 + pseudo(seed, 32) * 15) }
-    ],
-    inferenceTypes: [
-      { name: 'Chat', value: Math.round(50 + pseudo(seed, 40) * 20) },
-      { name: 'Completion', value: Math.round(20 + pseudo(seed, 41) * 15) },
-      { name: 'Embedding', value: Math.round(10 + pseudo(seed, 42) * 10) }
-    ],
-    resourceUsage: [
-      { name: 'On-device CPU', value: Math.round(45 + pseudo(seed, 50) * 20) },
-      { name: 'On-device GPU', value: Math.round(25 + pseudo(seed, 51) * 20) },
-      { name: 'Disk I/O', value: Math.round(10 + pseudo(seed, 52) * 15) }
-    ]
+    runway: isBusiness
+      ? {
+          monthsRemaining: Math.round(4 + pseudo(seed, 60) * 14),
+          monthlyBurn: Math.round(12000 + pseudo(seed, 61) * 18000),
+          cashOnHand: operatingFunds
+        }
+      : null
   }
 }
 
 export const mockDashboardApi: DashboardApi = {
-  getData: async (period) => createMockDashboardData(period)
+  getData: async (period, mode) => createMockDashboardData(period, mode)
 }

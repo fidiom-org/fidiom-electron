@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import { dashboardApi } from '../api'
-import type { DashboardData, DashboardPeriod } from './types'
+import type { DashboardData, DashboardPeriod, FinanceMode } from './types'
 
-export function useDashboardData(period: DashboardPeriod): {
+export function useDashboardData(
+  period: DashboardPeriod,
+  mode: FinanceMode
+): {
   data: DashboardData | null
   loading: boolean
 } {
@@ -15,7 +18,7 @@ export function useDashboardData(period: DashboardPeriod): {
     setLoading(true)
 
     dashboardApi
-      .getData({ month, year })
+      .getData({ month, year }, mode)
       .then((result) => {
         if (!cancelled) setData(result)
       })
@@ -26,7 +29,7 @@ export function useDashboardData(period: DashboardPeriod): {
     return () => {
       cancelled = true
     }
-  }, [month, year])
+  }, [month, year, mode])
 
   return { data, loading }
 }
