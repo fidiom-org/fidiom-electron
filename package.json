@@ -30,6 +30,7 @@
     "argon2": "^0.44.0",
     "better-sqlite3-multiple-ciphers": "^12.10.0",
     "electron-updater": "^6.3.9",
+    "react-is": "^19.2.7",
     "react-router-dom": "^7.17.0",
     "recharts": "^3.8.1",
     "tailwindcss": "^4.3.0"
