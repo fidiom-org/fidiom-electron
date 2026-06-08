@@ -35,8 +35,11 @@ function previousPeriod(period: DashboardPeriod): DashboardPeriod {
 
 function monthlyExpenseTotal(period: DashboardPeriod, mode: FinanceMode): number {
   const seed = periodSeed(period)
-  const base = mode === 'business' ? 18000 : 3200
-  return Math.round(base + seed * 47 + pseudo(seed, 5) * (mode === 'business' ? 8000 : 1800))
+  const base = mode === 'business' ? 14000 : 2800
+  const seasonal = Math.round(Math.sin((period.month / 12) * Math.PI * 2) * (mode === 'business' ? 2500 : 500))
+  const yearDrift = (period.year - 2025) * (mode === 'business' ? 800 : 200)
+  const noise = Math.round(pseudo(seed, 5) * (mode === 'business' ? 4000 : 900))
+  return base + seasonal + yearDrift + noise
 }
 
 function createMockDashboardData(period: DashboardPeriod, mode: FinanceMode): DashboardData {
