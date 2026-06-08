@@ -12,11 +12,6 @@ export interface DashboardSummary {
   netWorth: number
 }
 
-export interface BudgetOverview {
-  spentPercent: number
-  label: string
-}
-
 export interface ExpensePoint {
   period: string
   amount: number
@@ -56,8 +51,6 @@ export interface RunwayInfo {
 
 export interface DashboardData {
   summary: DashboardSummary
-  lastUpdated: string
-  budgetOverview: BudgetOverview
   expensesOverTime: ExpensePoint[]
   expensesByCategory: DistributionSlice[]
   periodComparison: PeriodComparison

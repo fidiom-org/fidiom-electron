@@ -3,7 +3,6 @@ import { useDashboardData } from '@renderer/entities/dashboard/model/useDashboar
 import { useDashboardPeriod } from '@renderer/features/dashboard-period/model/useDashboardPeriod'
 import { useFinanceMode } from '@renderer/features/finance-mode/model/useFinanceMode'
 import AnomaliesWidget from '@renderer/widgets/dashboard/AnomaliesWidget'
-import BudgetOverviewWidget from '@renderer/widgets/dashboard/BudgetOverviewWidget'
 import DashboardSummaryBar from '@renderer/widgets/dashboard/DashboardSummaryBar'
 import DashboardToolbar from '@renderer/widgets/dashboard/DashboardToolbar'
 import DistributionWidget from '@renderer/widgets/dashboard/DistributionWidget'
@@ -28,27 +27,21 @@ function MainPage(): React.JSX.Element {
             <DashboardToolbar
               month={period.month}
               year={period.year}
-              lastUpdated={data.lastUpdated}
               mode={mode}
               onMonthChange={period.setFromInput}
               onModeChange={setMode}
             />
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-              <div className="lg:col-span-3">
-                <BudgetOverviewWidget overview={data.budgetOverview} />
-              </div>
-              <div className="lg:col-span-9">
-                <ExpensesOverTimeWidget points={data.expensesOverTime} />
-              </div>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <ExpensesOverTimeWidget points={data.expensesOverTime} />
+              <DistributionWidget title="Expenses by category" slices={data.expensesByCategory} />
             </div>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <DistributionWidget title="Expenses by category" slices={data.expensesByCategory} />
               <PeriodComparisonWidget comparison={data.periodComparison} />
+              <TopCategoriesWidget categories={data.topCategories} />
             </div>
             <div
-              className={`grid grid-cols-1 gap-4 ${isBusiness ? 'md:grid-cols-2 xl:grid-cols-3' : 'md:grid-cols-2'}`}
+              className={`grid grid-cols-1 gap-4 ${isBusiness ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}
             >
-              <TopCategoriesWidget categories={data.topCategories} />
               <AnomaliesWidget anomalies={data.anomalies} />
               {isBusiness && data.runway && <RunwayCalculatorWidget runway={data.runway} />}
             </div>

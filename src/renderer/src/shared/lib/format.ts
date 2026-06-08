@@ -11,7 +11,3 @@ export function formatPercent(value: number): string {
   const sign = value > 0 ? '+' : ''
   return `${sign}${value}%`
 }
-
-export function formatDate(iso: string): string {
-  return iso
-}

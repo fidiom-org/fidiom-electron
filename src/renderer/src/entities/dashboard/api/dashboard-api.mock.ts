@@ -79,11 +79,6 @@ function createMockDashboardData(period: DashboardPeriod, mode: FinanceMode): Da
       debt,
       netWorth
     },
-    lastUpdated: `${period.year}-${String(period.month).padStart(2, '0')}-07`,
-    budgetOverview: {
-      spentPercent: Math.round(40 + pseudo(seed, 4) * 45),
-      label: 'Budget used'
-    },
     expensesOverTime: recentMonths(period, 6).map((m) => ({
       period: `${m.month}/${m.year}`,
       amount: monthlyExpenseTotal(m, mode)
