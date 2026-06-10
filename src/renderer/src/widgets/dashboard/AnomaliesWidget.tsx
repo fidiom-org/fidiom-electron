@@ -12,7 +12,7 @@ const severityStyles: Record<SpendingAnomaly['severity'], string> = {
   high: 'bg-rose-500/15 text-rose-300'
 }
 
-function AnomaliesWidget({ anomalies }: AnomaliesWidgetProps): React.JSX.Element {
+export const AnomaliesWidget = ({ anomalies }: AnomaliesWidgetProps): React.JSX.Element => {
   return (
     <ChartCard title="Spending anomalies">
       {anomalies.length === 0 ? (
@@ -40,5 +40,3 @@ function AnomaliesWidget({ anomalies }: AnomaliesWidgetProps): React.JSX.Element
     </ChartCard>
   )
 }
-
-export default AnomaliesWidget

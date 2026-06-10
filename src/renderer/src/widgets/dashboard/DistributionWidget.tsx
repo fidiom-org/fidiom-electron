@@ -9,7 +9,10 @@ interface DistributionWidgetProps {
   slices: DistributionSlice[]
 }
 
-function DistributionWidget({ title, slices }: DistributionWidgetProps): React.JSX.Element {
+export const DistributionWidget = ({
+  title,
+  slices
+}: DistributionWidgetProps): React.JSX.Element => {
   return (
     <ChartCard title={title}>
       <div className="h-48 sm:h-52">
@@ -54,5 +57,3 @@ function DistributionWidget({ title, slices }: DistributionWidgetProps): React.J
     </ChartCard>
   )
 }
-
-export default DistributionWidget

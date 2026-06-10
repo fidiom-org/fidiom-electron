@@ -6,7 +6,9 @@ interface RunwayCalculatorWidgetProps {
   runway: RunwayInfo
 }
 
-function RunwayCalculatorWidget({ runway }: RunwayCalculatorWidgetProps): React.JSX.Element {
+export const RunwayCalculatorWidget = ({
+  runway
+}: RunwayCalculatorWidgetProps): React.JSX.Element => {
   return (
     <ChartCard title="Runway calculator">
       <div className="space-y-4">
@@ -28,5 +30,3 @@ function RunwayCalculatorWidget({ runway }: RunwayCalculatorWidgetProps): React.
     </ChartCard>
   )
 }
-
-export default RunwayCalculatorWidget

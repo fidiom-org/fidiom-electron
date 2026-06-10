@@ -17,7 +17,9 @@ interface ExpensesOverTimeWidgetProps {
   points: ExpensePoint[]
 }
 
-function ExpensesOverTimeWidget({ points }: ExpensesOverTimeWidgetProps): React.JSX.Element {
+export const ExpensesOverTimeWidget = ({
+  points
+}: ExpensesOverTimeWidgetProps): React.JSX.Element => {
   return (
     <ChartCard title="Expenses over time">
       <div className="h-48 sm:h-52">
@@ -51,5 +53,3 @@ function ExpensesOverTimeWidget({ points }: ExpensesOverTimeWidgetProps): React.
     </ChartCard>
   )
 }
-
-export default ExpensesOverTimeWidget

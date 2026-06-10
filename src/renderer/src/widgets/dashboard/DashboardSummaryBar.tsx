@@ -12,7 +12,9 @@ const items = [
   { key: 'netWorth' as const, label: 'Net worth' }
 ]
 
-function DashboardSummaryBar({ summary }: DashboardSummaryBarProps): React.JSX.Element {
+export const DashboardSummaryBar = ({
+  summary
+}: DashboardSummaryBarProps): React.JSX.Element => {
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((item) => {
@@ -37,5 +39,3 @@ function DashboardSummaryBar({ summary }: DashboardSummaryBarProps): React.JSX.E
     </div>
   )
 }
-
-export default DashboardSummaryBar

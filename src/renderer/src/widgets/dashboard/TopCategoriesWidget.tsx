@@ -6,7 +6,9 @@ interface TopCategoriesWidgetProps {
   categories: TopCategory[]
 }
 
-function TopCategoriesWidget({ categories }: TopCategoriesWidgetProps): React.JSX.Element {
+export const TopCategoriesWidget = ({
+  categories
+}: TopCategoriesWidgetProps): React.JSX.Element => {
   return (
     <ChartCard title="Top spending categories">
       <ul className="space-y-3">
@@ -31,5 +33,3 @@ function TopCategoriesWidget({ categories }: TopCategoriesWidgetProps): React.JS
     </ChartCard>
   )
 }
-
-export default TopCategoriesWidget

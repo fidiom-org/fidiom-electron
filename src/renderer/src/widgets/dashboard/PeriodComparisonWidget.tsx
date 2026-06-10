@@ -6,7 +6,9 @@ interface PeriodComparisonWidgetProps {
   comparison: PeriodComparison
 }
 
-function PeriodComparisonWidget({ comparison }: PeriodComparisonWidgetProps): React.JSX.Element {
+export const PeriodComparisonWidget = ({
+  comparison
+}: PeriodComparisonWidgetProps): React.JSX.Element => {
   const isIncrease = comparison.changePercent > 0
 
   return (
@@ -34,5 +36,3 @@ function PeriodComparisonWidget({ comparison }: PeriodComparisonWidgetProps): Re
     </ChartCard>
   )
 }
-
-export default PeriodComparisonWidget
