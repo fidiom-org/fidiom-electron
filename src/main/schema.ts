@@ -172,7 +172,7 @@ const migrateAiChatsToConversations = (db: Database.Database): void => {
     .all() as { project_id: number }[]
 
   const insertChat = db.prepare(
-    'INSERT INTO chats (project_id, title, title_status, created_at, updated_at) VALUES (?, NULL, ?, datetime(\'now\'), datetime(\'now\'))'
+    "INSERT INTO chats (project_id, title, title_status, created_at, updated_at) VALUES (?, NULL, ?, datetime('now'), datetime('now'))"
   )
   const insertMessage = db.prepare(
     'INSERT INTO chat_messages (chat_id, role, content, created_at) VALUES (?, ?, ?, ?)'

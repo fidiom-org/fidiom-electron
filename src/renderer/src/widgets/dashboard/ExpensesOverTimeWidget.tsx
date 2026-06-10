@@ -17,9 +17,7 @@ interface ExpensesOverTimeWidgetProps {
   points: ExpensePoint[]
 }
 
-export const ExpensesOverTimeWidget = ({
-  points
-}: ExpensesOverTimeWidgetProps) => {
+export const ExpensesOverTimeWidget = ({ points }: ExpensesOverTimeWidgetProps) => {
   return (
     <ChartCard title="Expenses over time">
       <div className="h-48 sm:h-52">

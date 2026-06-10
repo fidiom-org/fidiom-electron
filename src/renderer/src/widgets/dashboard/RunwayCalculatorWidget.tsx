@@ -6,9 +6,7 @@ interface RunwayCalculatorWidgetProps {
   runway: RunwayInfo
 }
 
-export const RunwayCalculatorWidget = ({
-  runway
-}: RunwayCalculatorWidgetProps) => {
+export const RunwayCalculatorWidget = ({ runway }: RunwayCalculatorWidgetProps) => {
   return (
     <ChartCard title="Runway calculator">
       <div className="space-y-4">

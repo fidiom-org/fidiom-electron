@@ -1,20 +1,15 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 
 interface AuthStatus {
-  /** Whether a master key has been configured (an encrypted db exists). */
   initialized: boolean
-  /** Whether the db is currently unlocked in this session. */
   unlocked: boolean
 }
 
 interface AuthAPI {
   status: () => Promise<AuthStatus>
-  /** First run: create the encrypted db from a new master key. */
   setup: (masterKey: string) => Promise<void>
-  /** Returns false when the master key is wrong. */
   unlock: (masterKey: string) => Promise<boolean>
   lock: () => Promise<void>
-  /** Wipe the encrypted db so a new master key can be set. */
   reset: () => Promise<void>
 }
 
@@ -29,6 +24,52 @@ interface QvacAPI {
   infer: (history: { role: string; content: string }[]) => Promise<void>
   onCompletionStream: (cb: (token: string) => void) => void
   unloadModel: () => Promise<string>
+}
+
+interface VisionParseResult {
+  text: string
+  stats?: unknown
+}
+
+interface VisionModelStatus {
+  /** Weights + vision projector are present in the local cache (no download needed). */
+  ready: boolean
+  /** Model is resident in memory this session. */
+  loaded: boolean
+}
+
+interface VisionAPI {
+  /** Check whether the model is downloaded/loaded. */
+  status: () => Promise<VisionModelStatus>
+  /** Download (and load) the model; emits progress over `onProgress`. */
+  download: () => Promise<VisionModelStatus>
+  parse: (bytes: Uint8Array, ext: string, prompt?: string) => Promise<VisionParseResult>
+  onStream: (cb: (token: string) => void) => () => void
+  onProgress: (cb: (percentage: number | null) => void) => () => void
+  unload: () => Promise<void>
+}
+
+interface LlmModelStatus {
+  /** Weights are present in the local cache (no download needed). */
+  ready: boolean
+  /** Model is resident in memory this session. */
+  loaded: boolean
+}
+
+interface LlmAPI {
+  /** Check whether the chat model is downloaded/loaded. */
+  status: () => Promise<LlmModelStatus>
+  /** Download (and load) the model; emits progress over `onProgress`. */
+  download: () => Promise<LlmModelStatus>
+  /**
+   * Generate an assistant reply for the chat. Reads the chat history and the
+   * project's financial snapshot from SQLite, streams tokens over `onStream`,
+   * and resolves with the full reply text.
+   */
+  infer: (chatId: number) => Promise<string>
+  onStream: (cb: (token: string) => void) => () => void
+  onProgress: (cb: (percentage: number | null) => void) => () => void
+  unload: () => Promise<void>
 }
 
 interface ChatRow {
@@ -77,6 +118,8 @@ declare global {
     authAPI: AuthAPI
     dbAPI: DbAPI
     qvacAPI: QvacAPI
+    visionAPI: VisionAPI
+    llmAPI: LlmAPI
     chatAPI: ChatAPI
   }
 }

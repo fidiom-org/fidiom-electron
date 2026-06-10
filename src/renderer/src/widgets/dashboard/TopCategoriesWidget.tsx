@@ -6,9 +6,7 @@ interface TopCategoriesWidgetProps {
   categories: TopCategory[]
 }
 
-export const TopCategoriesWidget = ({
-  categories
-}: TopCategoriesWidgetProps) => {
+export const TopCategoriesWidget = ({ categories }: TopCategoriesWidgetProps) => {
   return (
     <ChartCard title="Top spending categories">
       <ul className="space-y-3">

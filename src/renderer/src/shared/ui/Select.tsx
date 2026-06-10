@@ -12,14 +12,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   ref?: Ref<HTMLSelectElement>
 }
 
-export const Select = ({
-  label,
-  options,
-  className,
-  id,
-  ref,
-  ...props
-}: SelectProps) => {
+export const Select = ({ label, options, className, id, ref, ...props }: SelectProps) => {
   return (
     <label className="block space-y-1.5">
       {label && <span className="text-sm font-medium text-zinc-400">{label}</span>}

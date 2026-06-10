@@ -40,6 +40,48 @@ if (process.contextIsolated) {
       unloadModel: (): Promise<string> => ipcRenderer.invoke('unload-model')
     })
 
+    contextBridge.exposeInMainWorld('visionAPI', {
+      status: (): Promise<{ ready: boolean; loaded: boolean }> =>
+        ipcRenderer.invoke('vision:status'),
+      download: (): Promise<{ ready: boolean; loaded: boolean }> =>
+        ipcRenderer.invoke('vision:download'),
+      parse: (
+        bytes: Uint8Array,
+        ext: string,
+        prompt?: string
+      ): Promise<{ text: string; stats?: unknown }> =>
+        ipcRenderer.invoke('vision:parse', bytes, ext, prompt),
+      onStream: (cb: (token: string) => void): (() => void) => {
+        const listener = (_event: unknown, token: string): void => cb(token)
+        ipcRenderer.on('vision:stream', listener)
+        return () => ipcRenderer.removeListener('vision:stream', listener)
+      },
+      onProgress: (cb: (percentage: number | null) => void): (() => void) => {
+        const listener = (_event: unknown, percentage: number | null): void => cb(percentage)
+        ipcRenderer.on('vision:progress', listener)
+        return () => ipcRenderer.removeListener('vision:progress', listener)
+      },
+      unload: (): Promise<void> => ipcRenderer.invoke('vision:unload')
+    })
+
+    contextBridge.exposeInMainWorld('llmAPI', {
+      status: (): Promise<{ ready: boolean; loaded: boolean }> => ipcRenderer.invoke('llm:status'),
+      download: (): Promise<{ ready: boolean; loaded: boolean }> =>
+        ipcRenderer.invoke('llm:download'),
+      infer: (chatId: number): Promise<string> => ipcRenderer.invoke('llm:infer', chatId),
+      onStream: (cb: (token: string) => void): (() => void) => {
+        const listener = (_event: unknown, token: string): void => cb(token)
+        ipcRenderer.on('llm:stream', listener)
+        return () => ipcRenderer.removeListener('llm:stream', listener)
+      },
+      onProgress: (cb: (percentage: number | null) => void): (() => void) => {
+        const listener = (_event: unknown, percentage: number | null): void => cb(percentage)
+        ipcRenderer.on('llm:progress', listener)
+        return () => ipcRenderer.removeListener('llm:progress', listener)
+      },
+      unload: (): Promise<void> => ipcRenderer.invoke('llm:unload')
+    })
+
     contextBridge.exposeInMainWorld('chatAPI', {
       list: (projectId?: number) => ipcRenderer.invoke('chat:list', projectId),
       get: (chatId: number) => ipcRenderer.invoke('chat:get', chatId),
@@ -48,11 +90,8 @@ if (process.contextIsolated) {
       appendMessage: (chatId: number, role: 'user' | 'assistant' | 'system', content: string) =>
         ipcRenderer.invoke('chat:appendMessage', chatId, role, content),
       delete: (chatId: number) => ipcRenderer.invoke('chat:delete', chatId),
-      updateTitle: (
-        chatId: number,
-        title: string,
-        titleStatus?: 'pending' | 'ready' | 'failed'
-      ) => ipcRenderer.invoke('chat:updateTitle', chatId, title, titleStatus),
+      updateTitle: (chatId: number, title: string, titleStatus?: 'pending' | 'ready' | 'failed') =>
+        ipcRenderer.invoke('chat:updateTitle', chatId, title, titleStatus),
       generateTitle: (chatId: number) => ipcRenderer.invoke('chat:generateTitle', chatId)
     })
   } catch (error) {

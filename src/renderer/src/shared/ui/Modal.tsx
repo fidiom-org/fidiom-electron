@@ -9,13 +9,7 @@ interface ModalProps {
   className?: string
 }
 
-export const Modal = ({
-  open,
-  onClose,
-  title,
-  children,
-  className
-}: ModalProps) => {
+export const Modal = ({ open, onClose, title, children, className }: ModalProps) => {
   useEffect(() => {
     if (!open) return
     const onKeyDown = (e: KeyboardEvent): void => {

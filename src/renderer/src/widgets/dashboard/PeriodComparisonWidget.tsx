@@ -6,9 +6,7 @@ interface PeriodComparisonWidgetProps {
   comparison: PeriodComparison
 }
 
-export const PeriodComparisonWidget = ({
-  comparison
-}: PeriodComparisonWidgetProps) => {
+export const PeriodComparisonWidget = ({ comparison }: PeriodComparisonWidgetProps) => {
   const isIncrease = comparison.changePercent > 0
 
   return (

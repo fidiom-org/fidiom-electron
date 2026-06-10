@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '@renderer/features/auth/AuthContext'
 import { Button } from '@renderer/components/ui/Button'
 import { Input } from '@renderer/components/ui/Input'
+import { ModelStatus } from '@renderer/components/ui/ModelStatus'
 
 export const AuthPage = () => {
   const navigate = useNavigate()
@@ -102,6 +103,8 @@ export const AuthPage = () => {
                 : 'Unlock'}
           </Button>
         </form>
+
+        <ModelStatus />
 
         {!creating && (
           <p className="mt-6 text-center text-xs text-zinc-600">

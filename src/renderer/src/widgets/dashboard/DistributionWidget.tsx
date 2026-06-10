@@ -9,10 +9,7 @@ interface DistributionWidgetProps {
   slices: DistributionSlice[]
 }
 
-export const DistributionWidget = ({
-  title,
-  slices
-}: DistributionWidgetProps) => {
+export const DistributionWidget = ({ title, slices }: DistributionWidgetProps) => {
   return (
     <ChartCard title={title}>
       <div className="h-48 sm:h-52">

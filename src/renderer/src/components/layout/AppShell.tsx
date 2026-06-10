@@ -3,10 +3,12 @@ import { NavLink, useMatches } from 'react-router-dom'
 import { useAuth } from '@renderer/features/auth/AuthContext'
 import { Button } from '@renderer/components/ui/Button'
 import { cn } from '@renderer/lib/cn'
+import { ChartColumn, Database, Settings } from 'lucide-react'
 
 const nav = [
-  { label: 'Dashboard', icon: '◧', to: '/' },
-  { label: 'AI Chats', icon: '✦', to: '/chats' }
+  { label: 'Dashboard', icon: <ChartColumn />, path: '/' },
+  { label: 'Models', icon: <Database />, path: '/chats' },
+  { label: 'Settings', icon: <Settings />, path: null }
 ]
 
 interface RouteHandle {
@@ -36,24 +38,36 @@ export const AppShell = ({ children }: AppShellProps) => {
           <span className="font-semibold">Fidiom</span>
         </div>
         <nav className="space-y-1">
-          {nav.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
-              className={({ isActive }) =>
-                cn(
-                  'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors',
-                  isActive
-                    ? 'bg-zinc-800 text-white'
-                    : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200'
-                )
-              }
-            >
-              <span className="text-zinc-500">{item.icon}</span>
-              {item.label}
-            </NavLink>
-          ))}
+          {nav.map((item) =>
+            item.path ? (
+              <NavLink
+                key={item.label}
+                to={item.path}
+                end={item.path === '/'}
+                className={({ isActive }) =>
+                  cn(
+                    'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors',
+                    isActive
+                      ? 'bg-zinc-800 text-white'
+                      : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200'
+                  )
+                }
+              >
+                <span className="text-zinc-500">{item.icon}</span>
+                {item.label}
+              </NavLink>
+            ) : (
+              <button
+                key={item.label}
+                type="button"
+                disabled
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-zinc-400 transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <span className="text-zinc-500">{item.icon}</span>
+                {item.label}
+              </button>
+            )
+          )}
         </nav>
         <div className="mt-auto rounded-xl border border-zinc-800 p-3">
           <p className="flex items-center gap-2 text-sm font-medium">
@@ -79,3 +93,5 @@ export const AppShell = ({ children }: AppShellProps) => {
     </div>
   )
 }
+
+export default AppShell

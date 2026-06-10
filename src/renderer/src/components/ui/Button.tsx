@@ -13,11 +13,7 @@ const variants: Record<Variant, string> = {
   outline: 'border border-zinc-700 text-zinc-200 hover:bg-zinc-800'
 }
 
-export const Button = ({
-  variant = 'primary',
-  className,
-  ...props
-}: ButtonProps) => {
+export const Button = ({ variant = 'primary', className, ...props }: ButtonProps) => {
   return (
     <button
       className={cn(

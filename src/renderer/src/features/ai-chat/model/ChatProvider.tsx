@@ -7,7 +7,6 @@ import {
   type ChatMessage
 } from '@renderer/entities/chat/model/types'
 import { useLocalStorage } from '@renderer/hooks/use-local-storage'
-import { mockInfer } from './mock-infer'
 
 interface ChatContextValue {
   chats: Chat[]
@@ -157,18 +156,23 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     setProcessing(true)
     inferRef.current = true
 
-    try {
-      const full = await mockInfer(trimmed, (token) => {
-        if (token === '') return
-        setMessages((prev) => {
-          const updated = [...prev]
-          const last = updated[updated.length - 1]
-          if (last?.role === 'assistant') {
-            updated[updated.length - 1] = { ...last, content: last.content + token }
+    const offStream = window.llmAPI.onStream((token) => {
+      if (token === '') return
+      setMessages((prev) => {
+        const updated = [...prev]
+        const last = updated[updated.length - 1]
+        if (last?.role === 'assistant') {
+          updated[updated.length - 1] = {
+            ...last,
+            content: last.content + token
           }
-          return updated
-        })
+        }
+        return updated
       })
+    })
+
+    try {
+      const full = await window.llmAPI.infer(chatId)
 
       const assistantRow = await window.chatAPI.appendMessage(chatId, 'assistant', full)
       setMessages((prev) => {
@@ -186,6 +190,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
         await refreshChats()
       }
     } finally {
+      offStream()
       setProcessing(false)
       inferRef.current = false
     }

@@ -17,34 +17,34 @@ export const MainPage = () => {
 
   return (
     <div className="space-y-6">
-        {loading || !data ? (
-          <p className="text-sm text-zinc-500">Loading dashboard…</p>
-        ) : (
-          <>
-            <DashboardSummaryBar summary={data.summary} />
-            <DashboardToolbar
-              month={period.month}
-              year={period.year}
-              mode={mode}
-              onMonthChange={period.setFromInput}
-              onModeChange={setMode}
-            />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <ExpensesOverTimeWidget points={data.expensesOverTime} />
-              <DistributionWidget title="Expenses by category" slices={data.expensesByCategory} />
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <PeriodComparisonWidget comparison={data.periodComparison} />
-              <TopCategoriesWidget categories={data.topCategories} />
-            </div>
-            <div
-              className={`grid grid-cols-1 gap-4 ${isBusiness ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}
-            >
-              <AnomaliesWidget anomalies={data.anomalies} />
-              {isBusiness && data.runway && <RunwayCalculatorWidget runway={data.runway} />}
-            </div>
-          </>
-        )}
-      </div>
+      {loading || !data ? (
+        <p className="text-sm text-zinc-500">Loading dashboard…</p>
+      ) : (
+        <>
+          <DashboardSummaryBar summary={data.summary} />
+          <DashboardToolbar
+            month={period.month}
+            year={period.year}
+            mode={mode}
+            onMonthChange={period.setFromInput}
+            onModeChange={setMode}
+          />
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <ExpensesOverTimeWidget points={data.expensesOverTime} />
+            <DistributionWidget title="Expenses by category" slices={data.expensesByCategory} />
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <PeriodComparisonWidget comparison={data.periodComparison} />
+            <TopCategoriesWidget categories={data.topCategories} />
+          </div>
+          <div
+            className={`grid grid-cols-1 gap-4 ${isBusiness ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}
+          >
+            <AnomaliesWidget anomalies={data.anomalies} />
+            {isBusiness && data.runway && <RunwayCalculatorWidget runway={data.runway} />}
+          </div>
+        </>
+      )}
+    </div>
   )
 }

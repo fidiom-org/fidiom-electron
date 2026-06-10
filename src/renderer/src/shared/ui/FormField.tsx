@@ -15,12 +15,7 @@ interface FormFieldProps {
  * prop receives RHF's `field` ({ value, onChange, onBlur, name, ref }) — spread
  * it onto a native input or pass value/onChange to a custom control.
  */
-export const FormField = ({
-  name,
-  label,
-  required,
-  children
-}: FormFieldProps) => {
+export const FormField = ({ name, label, required, children }: FormFieldProps) => {
   const {
     control,
     formState: { errors }

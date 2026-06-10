@@ -11,10 +11,7 @@ const options: { value: FinanceMode; label: string }[] = [
   { value: 'business', label: 'Business' }
 ]
 
-export const FinanceModeToggle = ({
-  mode,
-  onChange
-}: FinanceModeToggleProps) => {
+export const FinanceModeToggle = ({ mode, onChange }: FinanceModeToggleProps) => {
   return (
     <div className="flex rounded-xl border border-zinc-800 bg-zinc-900/60 p-1">
       {options.map((option) => (
@@ -24,9 +21,7 @@ export const FinanceModeToggle = ({
           onClick={() => onChange(option.value)}
           className={cn(
             'rounded-lg px-3 py-2 text-sm transition-colors',
-            mode === option.value
-              ? 'bg-zinc-800 text-white'
-              : 'text-zinc-400 hover:text-zinc-200'
+            mode === option.value ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-zinc-200'
           )}
         >
           {option.label}

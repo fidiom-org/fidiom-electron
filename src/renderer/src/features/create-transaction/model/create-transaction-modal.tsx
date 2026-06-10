@@ -16,11 +16,7 @@ export const useCreateTransactionModal = (): CreateTransactionModalValue => {
   return ctx
 }
 
-export const CreateTransactionModalProvider = ({
-  children
-}: {
-  children: ReactNode
-}) => {
+export const CreateTransactionModalProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const open = (): void => setIsOpen(true)

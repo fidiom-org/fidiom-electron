@@ -8,13 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   ref?: Ref<HTMLInputElement>
 }
 
-export const Input = ({
-  label,
-  className,
-  id,
-  ref,
-  ...props
-}: InputProps) => {
+export const Input = ({ label, className, id, ref, ...props }: InputProps) => {
   return (
     <label className="block space-y-1.5">
       {label && <span className="text-sm font-medium text-zinc-400">{label}</span>}
