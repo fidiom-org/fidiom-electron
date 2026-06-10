@@ -1,4 +1,3 @@
-import { AppShell } from '@renderer/components/layout/AppShell'
 import { useDashboardData } from '@renderer/entities/dashboard/model/useDashboardData'
 import { useDashboardPeriod } from '@renderer/features/dashboard-period/model/useDashboardPeriod'
 import { useFinanceMode } from '@renderer/features/finance-mode/model/useFinanceMode'
@@ -17,8 +16,7 @@ export const MainPage = () => {
   const { data, loading } = useDashboardData(period, mode)
 
   return (
-    <AppShell title="Dashboard">
-      <div className="space-y-6">
+    <div className="space-y-6">
         {loading || !data ? (
           <p className="text-sm text-zinc-500">Loading dashboard…</p>
         ) : (
@@ -48,6 +46,5 @@ export const MainPage = () => {
           </>
         )}
       </div>
-    </AppShell>
   )
 }

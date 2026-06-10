@@ -139,11 +139,74 @@ const V1 = `
   CREATE INDEX IF NOT EXISTS idx_chats_project ON ai_chats(project_id);
 `
 
+const V2 = `
+  CREATE TABLE IF NOT EXISTS chats (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id   INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    title        TEXT,
+    title_status TEXT NOT NULL DEFAULT 'pending'
+                 CHECK (title_status IN ('pending', 'ready', 'failed')),
+    created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_chats_project_updated ON chats(project_id, updated_at DESC);
+
+  CREATE TABLE IF NOT EXISTS chat_messages (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    chat_id    INTEGER NOT NULL REFERENCES chats(id) ON DELETE CASCADE,
+    role       TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+    content    TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_chat_messages_chat ON chat_messages(chat_id, created_at);
+`
+
+const migrateAiChatsToConversations = (db: Database.Database): void => {
+  const legacy = db
+    .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'ai_chats'")
+    .get()
+  if (!legacy) return
+
+  const projects = db
+    .prepare('SELECT DISTINCT project_id FROM ai_chats ORDER BY project_id')
+    .all() as { project_id: number }[]
+
+  const insertChat = db.prepare(
+    'INSERT INTO chats (project_id, title, title_status, created_at, updated_at) VALUES (?, NULL, ?, datetime(\'now\'), datetime(\'now\'))'
+  )
+  const insertMessage = db.prepare(
+    'INSERT INTO chat_messages (chat_id, role, content, created_at) VALUES (?, ?, ?, ?)'
+  )
+  const selectMessages = db.prepare(
+    'SELECT role, content, created_at FROM ai_chats WHERE project_id = ? ORDER BY created_at ASC, id ASC'
+  )
+
+  for (const { project_id } of projects) {
+    const { lastInsertRowid } = insertChat.run(project_id, 'pending')
+    const chatId = Number(lastInsertRowid)
+    for (const row of selectMessages.all(project_id) as {
+      role: string
+      content: string
+      created_at: string
+    }[]) {
+      insertMessage.run(chatId, row.role, row.content, row.created_at)
+    }
+  }
+
+  db.exec('DROP TABLE IF EXISTS ai_chats')
+}
+
 /** Ordered migrations; index N upgrades user_version N → N+1. */
-const migrations: ((db: Database.Database) => void)[] = [(db) => db.exec(V1)]
+const migrations: ((db: Database.Database) => void)[] = [
+  (db) => db.exec(V1),
+  (db) => {
+    db.exec(V2)
+    migrateAiChatsToConversations(db)
+  }
+]
 
 /** Apply every pending migration. Idempotent — safe to call on every open. */
-export function runMigrations(db: Database.Database): void {
+export const runMigrations = (db: Database.Database): void => {
   const current = db.pragma('user_version', { simple: true }) as number
   for (let v = current; v < migrations.length; v++) {
     db.transaction(() => {

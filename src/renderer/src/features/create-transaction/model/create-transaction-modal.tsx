@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
+import { createContext, useContext, useState, type ReactNode } from 'react'
 import { Modal } from '@renderer/shared/ui'
 import { CreateTransactionForm } from '@renderer/features/create-transaction/ui/CreateTransactionForm'
 
@@ -23,10 +23,9 @@ export const CreateTransactionModalProvider = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const open = useCallback(() => setIsOpen(true), [])
-  const close = useCallback(() => setIsOpen(false), [])
-
-  const handleCreated = useCallback((): void => close(), [close])
+  const open = (): void => setIsOpen(true)
+  const close = (): void => setIsOpen(false)
+  const handleCreated = (): void => close()
 
   return (
     <CreateTransactionModalContext.Provider value={{ open }}>

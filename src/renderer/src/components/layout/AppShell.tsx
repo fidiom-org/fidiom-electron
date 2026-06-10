@@ -1,21 +1,30 @@
 import type { ReactNode } from 'react'
+import { NavLink, useMatches } from 'react-router-dom'
 import { useAuth } from '@renderer/features/auth/AuthContext'
 import { Button } from '@renderer/components/ui/Button'
+import { cn } from '@renderer/lib/cn'
 
 const nav = [
-  { label: 'Dashboard', icon: '◧', active: true },
-  { label: 'Models', icon: '◇', active: false },
-  { label: 'Data', icon: '▤', active: false },
-  { label: 'Settings', icon: '⚙', active: false }
+  { label: 'Dashboard', icon: '◧', to: '/' },
+  { label: 'AI Chats', icon: '✦', to: '/chats' }
 ]
 
+interface RouteHandle {
+  title?: string
+}
+
 interface AppShellProps {
-  title: string
   children: ReactNode
 }
 
-export const AppShell = ({ title, children }: AppShellProps) => {
+export const AppShell = ({ children }: AppShellProps) => {
   const { lock } = useAuth()
+  const matches = useMatches()
+  const title =
+    [...matches]
+      .reverse()
+      .map((match) => (match.handle as RouteHandle | undefined)?.title)
+      .find(Boolean) ?? 'Fidiom'
 
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
@@ -28,18 +37,22 @@ export const AppShell = ({ title, children }: AppShellProps) => {
         </div>
         <nav className="space-y-1">
           {nav.map((item) => (
-            <button
-              key={item.label}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors 
-                ${
-                  item.active
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) =>
+                cn(
+                  'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors',
+                  isActive
                     ? 'bg-zinc-800 text-white'
                     : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200'
-                }`}
+                )
+              }
             >
               <span className="text-zinc-500">{item.icon}</span>
               {item.label}
-            </button>
+            </NavLink>
           ))}
         </nav>
         <div className="mt-auto rounded-xl border border-zinc-800 p-3">

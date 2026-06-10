@@ -69,10 +69,29 @@ export const useAuth = (): AuthContextValue => { ... }
 export const AuthProvider = ({ children }: { children: ReactNode }) => { ... }
 ```
 
+## Functions (all TypeScript)
+
+Use **const arrow function expressions** for helpers, hooks, and module exports — in `.ts` and `.tsx`:
+
+```ts
+// ✅ GOOD
+export const listChats = (projectId?: number): ChatRow[] => { ... }
+const touchChat = (chatId: number): void => { ... }
+
+// ❌ BAD — function declaration
+export function listChats(projectId?: number): ChatRow[] { ... }
+function touchChat(chatId: number): void { ... }
+```
+
 ## Do not use
 
 - `React.JSX.Element` / `JSX.Element` on components
 - `React.FC` / `FunctionComponent`
+- `useCallback` / `useMemo` — React Compiler handles memoization (see below)
+
+## React Compiler
+
+The renderer build uses `babel-plugin-react-compiler` via `@vitejs/plugin-react`. Do **not** add manual `useCallback` or `useMemo` for optimization — write plain functions and let the compiler memoize.
 
 ## Exceptions
 

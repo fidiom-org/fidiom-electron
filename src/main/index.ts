@@ -3,6 +3,7 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import * as secureStore from './secure-store'
+import { registerChatHandlers } from './chat-handlers'
 
 function createWindow(): void {
   // Create the browser window.
@@ -55,6 +56,7 @@ app.whenReady().then(() => {
 
   registerAuthHandlers()
   registerDbHandlers()
+  registerChatHandlers()
 
   createWindow()
 

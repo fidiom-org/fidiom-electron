@@ -32,11 +32,11 @@
     "argon2": "^0.44.0",
     "better-sqlite3-multiple-ciphers": "^12.10.0",
     "electron-updater": "^6.3.9",
+    "react-hook-form": "^7.78.0",
     "react-is": "^19.2.7",
     "react-router-dom": "^7.17.0",
     "recharts": "^3.8.1",
     "tailwindcss": "^4.3.0",
-    "react-hook-form": "^7.78.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -45,6 +45,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
+    "babel-plugin-react-compiler": "^1.0.0",
     "electron": "^39.2.6",
     "electron-builder": "^26.0.12",
     "electron-vite": "^5.0.0",

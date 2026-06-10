@@ -31,6 +31,45 @@ interface QvacAPI {
   unloadModel: () => Promise<string>
 }
 
+interface ChatRow {
+  id: number
+  project_id: number
+  title: string | null
+  title_status: 'pending' | 'ready' | 'failed'
+  created_at: string
+  updated_at: string
+}
+
+interface ChatMessageRow {
+  id: number
+  chat_id: number
+  role: 'user' | 'assistant' | 'system'
+  content: string
+  created_at: string
+}
+
+interface ChatWithMessages extends ChatRow {
+  messages: ChatMessageRow[]
+}
+
+interface ChatAPI {
+  list: (projectId?: number) => Promise<ChatRow[]>
+  get: (chatId: number) => Promise<ChatWithMessages | null>
+  create: (projectId?: number, title?: string | null) => Promise<ChatRow>
+  appendMessage: (
+    chatId: number,
+    role: ChatMessageRow['role'],
+    content: string
+  ) => Promise<ChatMessageRow>
+  delete: (chatId: number) => Promise<void>
+  updateTitle: (
+    chatId: number,
+    title: string,
+    titleStatus?: ChatRow['title_status']
+  ) => Promise<ChatRow>
+  generateTitle: (chatId: number) => Promise<ChatRow>
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -38,6 +77,7 @@ declare global {
     authAPI: AuthAPI
     dbAPI: DbAPI
     qvacAPI: QvacAPI
+    chatAPI: ChatAPI
   }
 }
 

@@ -39,6 +39,22 @@ if (process.contextIsolated) {
       },
       unloadModel: (): Promise<string> => ipcRenderer.invoke('unload-model')
     })
+
+    contextBridge.exposeInMainWorld('chatAPI', {
+      list: (projectId?: number) => ipcRenderer.invoke('chat:list', projectId),
+      get: (chatId: number) => ipcRenderer.invoke('chat:get', chatId),
+      create: (projectId?: number, title?: string | null) =>
+        ipcRenderer.invoke('chat:create', projectId, title),
+      appendMessage: (chatId: number, role: 'user' | 'assistant' | 'system', content: string) =>
+        ipcRenderer.invoke('chat:appendMessage', chatId, role, content),
+      delete: (chatId: number) => ipcRenderer.invoke('chat:delete', chatId),
+      updateTitle: (
+        chatId: number,
+        title: string,
+        titleStatus?: 'pending' | 'ready' | 'failed'
+      ) => ipcRenderer.invoke('chat:updateTitle', chatId, title, titleStatus),
+      generateTitle: (chatId: number) => ipcRenderer.invoke('chat:generateTitle', chatId)
+    })
   } catch (error) {
     console.error(error)
   }
