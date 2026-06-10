@@ -5,6 +5,8 @@ import { AuthPage } from '@renderer/pages/auth'
 import { ChatsPage } from '@renderer/pages/chats'
 import { ResetPage } from '@renderer/pages/reset'
 import { MainPage } from '@renderer/pages/main'
+import { ProjectDashboardPage } from '@renderer/pages/project-dashboard'
+import { ProjectsPage } from '@renderer/pages/projects'
 
 export const router = createHashRouter([
   { path: '/auth', element: <AuthPage /> },
@@ -16,6 +18,12 @@ export const router = createHashRouter([
         element: <ProtectedLayout />,
         children: [
           { path: '/', element: <MainPage />, handle: { title: 'Dashboard' } },
+          { path: '/projects', element: <ProjectsPage />, handle: { title: 'Projects' } },
+          {
+            path: '/projects/:projectId',
+            element: <ProjectDashboardPage />,
+            handle: { title: 'Project' }
+          },
           { path: '/chats', element: <ChatsPage />, handle: { title: 'AI Chats' } },
           { path: '/chats/:chatId', element: <ChatsPage />, handle: { title: 'AI Chats' } }
         ]

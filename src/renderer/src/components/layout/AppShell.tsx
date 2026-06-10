@@ -6,6 +6,7 @@ import { cn } from '@renderer/lib/cn'
 
 const nav = [
   { label: 'Dashboard', icon: '◧', to: '/' },
+  { label: 'Projects', icon: '◫', to: '/projects' },
   { label: 'AI Chats', icon: '✦', to: '/chats' }
 ]
 
@@ -40,7 +41,7 @@ export const AppShell = ({ children }: AppShellProps) => {
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.to === '/'}
+              end={item.to === '/' || item.to === '/projects'}
               className={({ isActive }) =>
                 cn(
                   'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors',
