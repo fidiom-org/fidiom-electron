@@ -1,5 +1,5 @@
 import type { RunwayInfo } from '@renderer/entities/dashboard/model/types'
-import ChartCard from '@renderer/shared/ui/ChartCard'
+import { ChartCard } from '@renderer/shared/ui/ChartCard'
 import { formatCurrency } from '@renderer/shared/lib/format'
 
 interface RunwayCalculatorWidgetProps {

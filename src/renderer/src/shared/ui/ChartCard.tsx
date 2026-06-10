@@ -7,7 +7,7 @@ interface ChartCardProps {
   children: ReactNode
 }
 
-function ChartCard({ title, className, children }: ChartCardProps): React.JSX.Element {
+export const ChartCard = ({ title, className, children }: ChartCardProps): React.JSX.Element => {
   return (
     <div
       className={cn(
@@ -20,5 +20,3 @@ function ChartCard({ title, className, children }: ChartCardProps): React.JSX.El
     </div>
   )
 }
-
-export default ChartCard

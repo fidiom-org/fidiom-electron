@@ -1,5 +1,5 @@
 import type { PeriodComparison } from '@renderer/entities/dashboard/model/types'
-import ChartCard from '@renderer/shared/ui/ChartCard'
+import { ChartCard } from '@renderer/shared/ui/ChartCard'
 import { formatCurrency, formatPercent } from '@renderer/shared/lib/format'
 
 interface PeriodComparisonWidgetProps {

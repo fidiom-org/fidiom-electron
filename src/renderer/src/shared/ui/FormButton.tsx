@@ -11,12 +11,12 @@ interface FormButtonProps extends ComponentProps<typeof Button> {
  * Submit button that reads `isSubmitting` from the surrounding <Form> context,
  * auto-disabling and swapping its label while a submit is in flight.
  */
-export function FormButton({
+export const FormButton = ({
   children,
   pendingLabel,
   disabled,
   ...props
-}: FormButtonProps): React.JSX.Element {
+}: FormButtonProps): React.JSX.Element => {
   const {
     formState: { isSubmitting }
   } = useFormContext()

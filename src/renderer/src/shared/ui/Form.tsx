@@ -13,12 +13,12 @@ interface FormProps<TIn extends FieldValues, TCtx, TOut extends FieldValues> {
  * the form via useFormContext() (no prop drilling), and renders the native
  * <form>. Pass the form returned by useForm and a submit handler.
  */
-export function Form<TIn extends FieldValues, TCtx, TOut extends FieldValues>({
+export const Form = <TIn extends FieldValues, TCtx, TOut extends FieldValues>({
   form,
   onSubmit,
   children,
   className
-}: FormProps<TIn, TCtx, TOut>): React.JSX.Element {
+}: FormProps<TIn, TCtx, TOut>): React.JSX.Element => {
   return (
     <FormProvider {...form}>
       <form onSubmit={onSubmit} className={className} noValidate>

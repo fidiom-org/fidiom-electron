@@ -12,7 +12,14 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   ref?: Ref<HTMLSelectElement>
 }
 
-function Select({ label, options, className, id, ref, ...props }: SelectProps): React.JSX.Element {
+export const Select = ({
+  label,
+  options,
+  className,
+  id,
+  ref,
+  ...props
+}: SelectProps): React.JSX.Element => {
   return (
     <label className="block space-y-1.5">
       {label && <span className="text-sm font-medium text-zinc-400">{label}</span>}
@@ -35,5 +42,3 @@ function Select({ label, options, className, id, ref, ...props }: SelectProps): 
     </label>
   )
 }
-
-export default Select

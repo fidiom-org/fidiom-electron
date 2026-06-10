@@ -1,5 +1,6 @@
-export { default as Select } from './Select'
-export { default as Modal } from './Modal'
+export { Select } from './Select'
+export { Modal } from './Modal'
+export { ChartCard } from './ChartCard'
 export { Form } from './Form'
 export { FormField } from './FormField'
 export { FormButton } from './FormButton'

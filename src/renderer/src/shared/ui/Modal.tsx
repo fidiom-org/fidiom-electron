@@ -9,13 +9,13 @@ interface ModalProps {
   className?: string
 }
 
-function Modal({
+export const Modal = ({
   open,
   onClose,
   title,
   children,
   className
-}: ModalProps): React.JSX.Element | null {
+}: ModalProps): React.JSX.Element | null => {
   useEffect(() => {
     if (!open) return
     const onKeyDown = (e: KeyboardEvent): void => {
@@ -59,5 +59,3 @@ function Modal({
     </div>
   )
 }
-
-export default Modal
