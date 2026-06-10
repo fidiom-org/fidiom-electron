@@ -29,6 +29,8 @@ There is **no test runner configured** — no test script, framework, or test fi
 
 Tooling note: linting/formatting use **oxlint + oxfmt** (Oxc), not ESLint/Prettier, despite the leftover `dbaeumer.vscode-eslint` VSCode recommendation and README. Format style: single quotes, no semicolons, no trailing commas, 100-col width.
 
+React component conventions (arrow functions, named exports, props naming): see `.cursor/rules/react-components.mdc`.
+
 ## Architecture
 
 Three-process Electron split, each with its own tsconfig:

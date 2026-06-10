@@ -1,0 +1,76 @@
+---
+description: React component conventions — arrow functions, exports, props
+globs: src/renderer/**/*.tsx
+alwaysApply: false
+---
+
+# React components
+
+## Component shape
+
+Use **arrow functions** for all components (pages, widgets, features, shared UI, providers).
+
+```tsx
+// ✅ GOOD
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'ghost'
+}
+
+export const Button = ({
+  variant = 'primary',
+  className,
+  ...props
+}: ButtonProps): React.JSX.Element => {
+  return <button className={cn(variants[variant], className)} {...props} />
+}
+
+// ❌ BAD
+function Button({ variant = 'primary' }: ButtonProps): React.JSX.Element {
+  return <button />
+}
+```
+
+## Exports
+
+- Prefer **named exports** (`export const Foo`).
+- Avoid `export default` in new code.
+- File name = component name (`Button.tsx` → `Button`).
+
+## Props
+
+- Props interface: `ComponentNameProps`, declared above the component.
+- Return type: `React.JSX.Element` (or `React.JSX.Element | null` when needed).
+
+## Sub-components
+
+Private helpers in the same file — arrow functions, not exported:
+
+```tsx
+const CategoryPill = ({ option }: { option: CategoryOption }): React.JSX.Element => (...)
+```
+
+## Hooks & providers
+
+Same arrow style:
+
+```tsx
+export const useAuth = (): AuthContextValue => { ... }
+export const AuthProvider = ({ children }: { children: ReactNode }): React.JSX.Element => { ... }
+```
+
+## Exceptions
+
+- `forwardRef`: wrap arrow component in `forwardRef`, export with named export.
+- Generic components with constrained type params: arrow is fine; unconstrained generics may need a function declaration (rare).
+
+## Layer placement (FSD)
+
+| Layer | Path | Example |
+|-------|------|---------|
+| pages | `pages/` | route screens |
+| widgets | `widgets/` | dashboard blocks |
+| features | `features/*/ui/` | forms, toggles |
+| shared UI | `shared/ui/` | Form, Modal, ChartCard |
+| legacy | `components/` | migrate to `shared/ui` over time |
+
+Logic stays in `model/` hooks; components stay presentational where possible.
