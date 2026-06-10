@@ -48,7 +48,7 @@ export const ChatDrawer = () => {
             <p className="truncate text-sm font-semibold text-zinc-100">{activeChatTitle}</p>
             <p className="text-xs text-zinc-500">On-device AI CFO</p>
           </div>
-          <Button variant="ghost" onClick={() => void createChat()}>
+          <Button variant="ghost" onClick={() => void createChat().then(() => undefined)}>
             New chat
           </Button>
           <Button

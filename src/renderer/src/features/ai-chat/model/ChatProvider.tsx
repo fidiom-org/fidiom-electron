@@ -30,7 +30,7 @@ interface ChatContextValue {
   closeDrawer: () => void
   toggleDrawer: () => void
   selectChat: (chatId: number) => Promise<void>
-  createChat: () => Promise<void>
+  createChat: () => Promise<number>
   deleteChat: (chatId: number) => Promise<void>
   sendMessage: (text: string) => Promise<void>
   refreshChats: () => Promise<void>
@@ -129,12 +129,13 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     [loadChat]
   )
 
-  const createChat = useCallback(async () => {
+  const createChat = useCallback(async (): Promise<number> => {
     const created = await window.chatAPI.create()
     const chat = mapChatRow(created)
     setChats((prev) => [chat, ...prev])
     setActiveChatId(chat.id)
     setMessages([])
+    return chat.id
   }, [setActiveChatId])
 
   const deleteChat = useCallback(

@@ -16,7 +16,8 @@ export const router = createHashRouter([
         element: <ProtectedLayout />,
         children: [
           { path: '/', element: <MainPage />, handle: { title: 'Dashboard' } },
-          { path: '/chats', element: <ChatsPage />, handle: { title: 'AI Chats' } }
+          { path: '/chats', element: <ChatsPage />, handle: { title: 'AI Chats' } },
+          { path: '/chats/:chatId', element: <ChatsPage />, handle: { title: 'AI Chats' } }
         ]
       }
     ]
