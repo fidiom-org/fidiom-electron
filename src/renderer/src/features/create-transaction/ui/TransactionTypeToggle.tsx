@@ -11,7 +11,10 @@ const options: { value: TransactionType; label: string }[] = [
   { value: 'income', label: 'Income' }
 ]
 
-function TransactionTypeToggle({ value, onChange }: TransactionTypeToggleProps): React.JSX.Element {
+export const TransactionTypeToggle = ({
+  value,
+  onChange
+}: TransactionTypeToggleProps): React.JSX.Element => {
   return (
     <div className="flex rounded-xl border border-zinc-800 bg-zinc-900/60 p-1">
       {options.map((option) => (
@@ -30,5 +33,3 @@ function TransactionTypeToggle({ value, onChange }: TransactionTypeToggleProps):
     </div>
   )
 }
-
-export default TransactionTypeToggle

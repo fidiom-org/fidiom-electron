@@ -11,7 +11,10 @@ const options: { value: FinanceMode; label: string }[] = [
   { value: 'business', label: 'Business' }
 ]
 
-function FinanceModeToggle({ mode, onChange }: FinanceModeToggleProps): React.JSX.Element {
+export const FinanceModeToggle = ({
+  mode,
+  onChange
+}: FinanceModeToggleProps): React.JSX.Element => {
   return (
     <div className="flex rounded-xl border border-zinc-800 bg-zinc-900/60 p-1">
       {options.map((option) => (
@@ -32,5 +35,3 @@ function FinanceModeToggle({ mode, onChange }: FinanceModeToggleProps): React.JS
     </div>
   )
 }
-
-export default FinanceModeToggle

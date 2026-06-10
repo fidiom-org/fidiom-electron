@@ -15,7 +15,7 @@ interface AuthContextValue extends AuthState {
 
 const AuthContext = createContext<AuthContextValue | null>(null)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
+export const AuthProvider = ({ children }: { children: ReactNode }): React.JSX.Element => {
   const [state, setState] = useState<AuthState>({
     initialized: false,
     unlocked: false
@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext value={value}>{children}</AuthContext>
 }
 
-export function useAuth(): AuthContextValue {
+export const useAuth = (): AuthContextValue => {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used within <AuthProvider>')
   return ctx

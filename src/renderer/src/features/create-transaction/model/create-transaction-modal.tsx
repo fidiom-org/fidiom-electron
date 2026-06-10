@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState, type ReactNode } from 'react'
 import { Modal } from '@renderer/shared/ui'
-import CreateTransactionForm from '@renderer/features/create-transaction/ui/CreateTransactionForm'
+import { CreateTransactionForm } from '@renderer/features/create-transaction/ui/CreateTransactionForm'
 
 interface CreateTransactionModalValue {
   open: () => void
@@ -8,7 +8,7 @@ interface CreateTransactionModalValue {
 
 const CreateTransactionModalContext = createContext<CreateTransactionModalValue | null>(null)
 
-export function useCreateTransactionModal(): CreateTransactionModalValue {
+export const useCreateTransactionModal = (): CreateTransactionModalValue => {
   const ctx = useContext(CreateTransactionModalContext)
   if (!ctx) {
     throw new Error('useCreateTransactionModal must be used within CreateTransactionModalProvider')
@@ -16,11 +16,11 @@ export function useCreateTransactionModal(): CreateTransactionModalValue {
   return ctx
 }
 
-export function CreateTransactionModalProvider({
+export const CreateTransactionModalProvider = ({
   children
 }: {
   children: ReactNode
-}): React.JSX.Element {
+}): React.JSX.Element => {
   const [isOpen, setIsOpen] = useState(false)
 
   const open = useCallback(() => setIsOpen(true), [])

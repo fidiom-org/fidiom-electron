@@ -1,15 +1,17 @@
 import { type TransactionDraft } from '@renderer/entities/transaction'
 import { useCreateTransaction } from '@renderer/features/create-transaction/model/use-create-transaction'
-import TransactionTypeToggle from '@renderer/features/create-transaction/ui/TransactionTypeToggle'
+import { TransactionTypeToggle } from '@renderer/features/create-transaction/ui/TransactionTypeToggle'
 import { CategorySelect } from '@renderer/features/create-transaction/ui/CategorySelect'
 import { Form, FormField, FormButton } from '@renderer/shared/ui'
 import { Input } from '@renderer/components/ui/Input'
 
-const CreateTransactionForm = ({
-  onCreated
-}: {
+interface CreateTransactionFormProps {
   onCreated?: (draft: TransactionDraft) => void
-}): React.JSX.Element => {
+}
+
+export const CreateTransactionForm = ({
+  onCreated
+}: CreateTransactionFormProps): React.JSX.Element => {
   const { form, submit } = useCreateTransaction(onCreated)
 
   return (
@@ -46,5 +48,3 @@ const CreateTransactionForm = ({
     </Form>
   )
 }
-
-export default CreateTransactionForm

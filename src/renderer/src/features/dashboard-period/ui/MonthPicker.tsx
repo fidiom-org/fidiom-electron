@@ -4,7 +4,7 @@ interface MonthPickerProps {
   onChange: (value: string) => void
 }
 
-function MonthPicker({ month, year, onChange }: MonthPickerProps): React.JSX.Element {
+export const MonthPicker = ({ month, year, onChange }: MonthPickerProps): React.JSX.Element => {
   const value = `${year}-${String(month).padStart(2, '0')}`
 
   return (
@@ -21,5 +21,3 @@ function MonthPicker({ month, year, onChange }: MonthPickerProps): React.JSX.Ele
     </label>
   )
 }
-
-export default MonthPicker
