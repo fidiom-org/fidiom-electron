@@ -39,6 +39,30 @@ if (process.contextIsolated) {
       },
       unloadModel: (): Promise<string> => ipcRenderer.invoke('unload-model')
     })
+
+    contextBridge.exposeInMainWorld('visionAPI', {
+      status: (): Promise<{ ready: boolean; loaded: boolean }> =>
+        ipcRenderer.invoke('vision:status'),
+      download: (): Promise<{ ready: boolean; loaded: boolean }> =>
+        ipcRenderer.invoke('vision:download'),
+      parse: (
+        bytes: Uint8Array,
+        ext: string,
+        prompt?: string
+      ): Promise<{ text: string; stats?: unknown }> =>
+        ipcRenderer.invoke('vision:parse', bytes, ext, prompt),
+      onStream: (cb: (token: string) => void): (() => void) => {
+        const listener = (_event: unknown, token: string): void => cb(token)
+        ipcRenderer.on('vision:stream', listener)
+        return () => ipcRenderer.removeListener('vision:stream', listener)
+      },
+      onProgress: (cb: (percentage: number | null) => void): (() => void) => {
+        const listener = (_event: unknown, percentage: number | null): void => cb(percentage)
+        ipcRenderer.on('vision:progress', listener)
+        return () => ipcRenderer.removeListener('vision:progress', listener)
+      },
+      unload: (): Promise<void> => ipcRenderer.invoke('vision:unload')
+    })
   } catch (error) {
     console.error(error)
   }

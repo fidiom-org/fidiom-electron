@@ -21,9 +21,7 @@ function FinanceModeToggle({ mode, onChange }: FinanceModeToggleProps): React.JS
           onClick={() => onChange(option.value)}
           className={cn(
             'rounded-lg px-3 py-2 text-sm transition-colors',
-            mode === option.value
-              ? 'bg-zinc-800 text-white'
-              : 'text-zinc-400 hover:text-zinc-200'
+            mode === option.value ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-zinc-200'
           )}
         >
           {option.label}

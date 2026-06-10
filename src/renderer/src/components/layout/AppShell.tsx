@@ -1,16 +1,25 @@
-import type { ReactNode } from 'react'
-import { useAuth } from '@renderer/features/auth/AuthContext'
-import Button from '@renderer/components/ui/Button'
+import type { ReactNode } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@renderer/features/auth/AuthContext";
+import Button from "@renderer/components/ui/Button";
+import { ChartColumn, Database, Settings } from "lucide-react";
 
 const nav = [
-  { label: 'Dashboard', icon: '◧', active: true },
-  { label: 'Models', icon: '◇', active: false },
-  { label: 'Data', icon: '▤', active: false },
-  { label: 'Settings', icon: '⚙', active: false }
-]
+  { label: "Dashboard", icon: <ChartColumn />, path: "/" },
+  { label: "Models", icon: <Database />, path: null },
+  { label: "Settings", icon: <Settings />, path: null },
+];
 
-function AppShell({ title, children }: { title: string; children: ReactNode }): React.JSX.Element {
-  const { lock } = useAuth()
+function AppShell({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}): React.JSX.Element {
+  const { lock } = useAuth();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
@@ -22,26 +31,33 @@ function AppShell({ title, children }: { title: string; children: ReactNode }): 
           <span className="font-semibold">Fidiom</span>
         </div>
         <nav className="space-y-1">
-          {nav.map((item) => (
-            <button
-              key={item.label}
-              className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors 
+          {nav.map((item) => {
+            const active = item.path === pathname;
+            return (
+              <button
+                key={item.label}
+                disabled={!item.path}
+                onClick={() => item.path && navigate(item.path)}
+                className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors
                 ${
-                  item.active
-                    ? 'bg-zinc-800 text-white'
-                    : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200'
-                }`}
-            >
-              <span className="text-zinc-500">{item.icon}</span>
-              {item.label}
-            </button>
-          ))}
+                  active
+                    ? "bg-zinc-800 text-white"
+                    : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
+                } disabled:cursor-not-allowed disabled:opacity-40`}
+              >
+                <span className="text-zinc-500">{item.icon}</span>
+                {item.label}
+              </button>
+            );
+          })}
         </nav>
         <div className="mt-auto rounded-xl border border-zinc-800 p-3">
           <p className="flex items-center gap-2 text-sm font-medium">
             <span className="text-emerald-400">🔓</span> Vault unlocked
           </p>
-          <p className="truncate text-xs text-zinc-500">Encrypted local store</p>
+          <p className="truncate text-xs text-zinc-500">
+            Encrypted local store
+          </p>
           <Button variant="ghost" className="mt-2 w-full" onClick={lock}>
             Lock
           </Button>
@@ -59,7 +75,7 @@ function AppShell({ title, children }: { title: string; children: ReactNode }): 
         <main className="flex-1 overflow-y-auto p-8">{children}</main>
       </div>
     </div>
-  )
+  );
 }
 
-export default AppShell
+export default AppShell;
