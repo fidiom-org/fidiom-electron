@@ -4,7 +4,7 @@ import { useAuth } from '@renderer/features/auth/AuthContext'
 import { Button } from '@renderer/components/ui/Button'
 import { Input } from '@renderer/components/ui/Input'
 
-function AuthPage() {
+export const AuthPage = (): React.JSX.Element => {
   const navigate = useNavigate()
 
   const { initialized, setup, unlock } = useAuth()
@@ -115,5 +115,3 @@ function AuthPage() {
     </div>
   )
 }
-
-export default AuthPage

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 type Message = { role: 'user' | 'assistant'; content: string }
 
-function App(): React.JSX.Element {
+export const App = (): React.JSX.Element => {
   const [loading, setLoading] = useState(true)
   const [processing, setProcessing] = useState(false)
   const [messages, setMessages] = useState<Message[]>([])
@@ -120,5 +120,3 @@ function App(): React.JSX.Element {
     </div>
   )
 }
-
-export default App
