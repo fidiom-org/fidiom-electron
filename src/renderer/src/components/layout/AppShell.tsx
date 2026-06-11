@@ -3,10 +3,11 @@ import { NavLink, useMatches } from 'react-router-dom'
 import { useAuth } from '@renderer/features/auth/AuthContext'
 import { Button } from '@renderer/components/ui/Button'
 import { cn } from '@renderer/lib/cn'
-import { ChartColumn, Database, Settings } from 'lucide-react'
+import { ChartColumn, Database, FolderKanban, Settings } from 'lucide-react'
 
 const nav = [
   { label: 'Dashboard', icon: <ChartColumn />, path: '/' },
+  { label: 'Projects', icon: <FolderKanban />, path: '/projects' },
   { label: 'Models', icon: <Database />, path: '/chats' },
   { label: 'Settings', icon: <Settings />, path: null }
 ]
@@ -43,7 +44,7 @@ export const AppShell = ({ children }: AppShellProps) => {
               <NavLink
                 key={item.label}
                 to={item.path}
-                end={item.path === '/'}
+                end={item.path === '/' || item.path === '/projects'}
                 className={({ isActive }) =>
                   cn(
                     'flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors',
