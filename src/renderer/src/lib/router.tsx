@@ -7,7 +7,7 @@ import { ResetPage } from '@renderer/pages/reset'
 import { MainPage } from '@renderer/pages/main'
 import { ProjectDashboardPage } from '@renderer/pages/project-dashboard'
 import { ProjectsPage } from '@renderer/pages/projects'
-import { SettingsPage } from '@renderer/pages/settings'
+import { TransactionsPage } from '@renderer/pages/transactions'
 
 export const router = createHashRouter([
   { path: '/auth', element: <AuthPage /> },
@@ -20,22 +20,10 @@ export const router = createHashRouter([
         children: [
           { path: '/', element: <MainPage />, handle: { title: 'Dashboard' } },
           { path: '/projects', element: <ProjectsPage />, handle: { title: 'Projects' } },
-          {
-            path: '/projects/:projectId',
-            element: <ProjectDashboardPage />,
-            handle: { title: 'Project' }
-          },
-          {
-            path: '/chats',
-            element: <ChatsPage />,
-            handle: { title: 'AI Chats' }
-          },
-          {
-            path: '/chats/:chatId',
-            element: <ChatsPage />,
-            handle: { title: 'AI Chats' }
-          },
-          { path: '/settings', element: <SettingsPage />, handle: { title: 'Settings' } }
+          { path: '/projects/:projectId', element: <ProjectDashboardPage />, handle: { title: 'Project' } },
+          { path: '/chats', element: <ChatsPage />, handle: { title: 'AI Chats' } },
+          { path: '/chats/:chatId', element: <ChatsPage />, handle: { title: 'AI Chats' } },
+          { path: '/transactions', element: <TransactionsPage />, handle: { title: 'Transactions' } }
         ]
       }
     ]

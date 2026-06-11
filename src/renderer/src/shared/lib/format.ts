@@ -18,3 +18,9 @@ export function formatBytes(bytes: number): string {
   if (gb >= 1) return `${gb.toFixed(1)} GB`
   return `${Math.round(bytes / 1024 ** 2)} MB`
 }
+
+export function formatDate(isoDate: string): string {
+  const date = new Date(`${isoDate.slice(0, 10)}T00:00:00`)
+  if (Number.isNaN(date.getTime())) return isoDate
+  return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+}

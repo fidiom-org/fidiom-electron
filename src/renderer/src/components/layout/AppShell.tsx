@@ -1,22 +1,21 @@
-import type { ReactNode } from "react";
-import { NavLink, useMatches } from "react-router-dom";
-import { useAuth } from "@renderer/features/auth/AuthContext";
-import { Button } from "@renderer/components/ui/Button";
-import { ChartColumn, Database, FolderKanban, Settings } from "lucide-react";
-import { cn } from "@renderer/lib/cn";
+import type { ReactNode } from 'react'
+import { NavLink, useMatches } from 'react-router-dom'
+import { useAuth } from '@renderer/features/auth/AuthContext'
+import { Button } from '@renderer/components/ui/Button'
+import { cn } from '@renderer/lib/cn'
 
+import { ArrowLeftRight, ChartColumn, Database, FolderKanban, Settings } from 'lucide-react'
 import logoImg from "../../../../../resources/icon.png";
-
 const nav = [
-  { label: "Dashboard", icon: <ChartColumn />, path: "/" },
-  { label: "Projects", icon: <FolderKanban />, path: "/projects" },
-  { label: "Models", icon: <Database />, path: "/chats" },
-  { label: "Settings", icon: <Settings />, path: "/settings" },
-];
+  { label: 'Dashboard', icon: <ChartColumn />, path: '/' },
+  { label: 'Projects', icon: <FolderKanban />, path: '/projects' },
+  { label: 'Transactions', icon: <ArrowLeftRight />, path: '/transactions' },
+  { label: 'Models', icon: <Database />, path: '/chats' },
+  { label: 'Settings', icon: <Settings />, path: null }
+]
 
-interface RouteHandle {
-  title?: string;
-}
+
+
 
 interface AppShellProps {
   children: ReactNode;
@@ -24,12 +23,7 @@ interface AppShellProps {
 
 export const AppShell = ({ children }: AppShellProps) => {
   const { lock } = useAuth();
-  const matches = useMatches();
-  const title =
-    [...matches]
-      .reverse()
-      .map((match) => (match.handle as RouteHandle | undefined)?.title)
-      .find(Boolean) ?? "Fidiom";
+  
 
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
@@ -87,7 +81,6 @@ export const AppShell = ({ children }: AppShellProps) => {
         <main className="flex-1 overflow-y-auto p-8">{children}</main>
       </div>
     </div>
-  );
-};
 
-export default AppShell;
+  )
+}

@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  notifyTransactionsChanged,
   transactionSchema,
   type TransactionDraft,
   type TransactionInput
@@ -16,6 +17,7 @@ export function useCreateTransaction(onCreated?: (draft: TransactionDraft) => vo
   const submit = form.handleSubmit(async (draft) => {
     try {
       await saveTransaction(draft)
+      notifyTransactionsChanged()
       onCreated?.(draft)
       form.reset()
     } catch (error) {

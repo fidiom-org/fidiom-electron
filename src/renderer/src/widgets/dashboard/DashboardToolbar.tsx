@@ -1,7 +1,6 @@
 import { MonthPicker } from '@renderer/features/dashboard-period/ui/MonthPicker'
 import { FinanceModeToggle } from '@renderer/features/finance-mode/ui/FinanceModeToggle'
-import { useCreateTransactionModal } from '@renderer/features/create-transaction'
-import { Button } from '@renderer/components/ui/Button'
+
 import type { FinanceMode } from '@renderer/entities/dashboard/model/types'
 
 interface DashboardToolbarProps {
@@ -19,8 +18,6 @@ export const DashboardToolbar = ({
   onMonthChange,
   onModeChange
 }: DashboardToolbarProps) => {
-  const { open } = useCreateTransactionModal()
-
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:max-w-xl">
@@ -32,7 +29,6 @@ export const DashboardToolbar = ({
           <FinanceModeToggle mode={mode} onChange={onModeChange} />
         </div>
       </div>
-      <Button onClick={open}>New transaction</Button>
     </div>
   )
 }
