@@ -6,6 +6,7 @@ import { ChatsPage } from '@renderer/pages/chats'
 import { ResetPage } from '@renderer/pages/reset'
 import { MainPage } from '@renderer/pages/main'
 import { ProjectDashboardPage } from '@renderer/pages/project-dashboard'
+import { ProjectPlanPage } from '@renderer/pages/project-plan'
 import { ProjectsPage } from '@renderer/pages/projects'
 import { SettingsPage } from '@renderer/pages/settings'
 
@@ -24,6 +25,11 @@ export const router = createHashRouter([
             path: '/projects/:projectId',
             element: <ProjectDashboardPage />,
             handle: { title: 'Project' }
+          },
+          {
+            path: '/projects/:projectId/plan',
+            element: <ProjectPlanPage />,
+            handle: { title: 'Plan' }
           },
           {
             path: '/chats',
