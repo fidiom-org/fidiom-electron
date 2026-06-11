@@ -75,6 +75,13 @@ export const AppShell = ({ children }: AppShellProps) => {
       </aside>
 
       <div className="flex flex-1 flex-col overflow-hidden">
+        <header className="flex items-center justify-between border-b border-zinc-800 px-8 py-5">
+          <h1 className="text-lg font-semibold">{title}</h1>
+          <span className="flex items-center gap-2 text-sm text-zinc-500">
+            <span className="inline-block h-2 w-2 rounded-full bg-emerald-400" />
+            Connected
+          </span>
+        </header>
         <main className="flex-1 overflow-y-auto p-8">{children}</main>
       </div>
     </div>
