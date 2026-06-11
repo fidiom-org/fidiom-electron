@@ -42,7 +42,7 @@ export const ProjectDashboardPage = () => {
   const isEmpty = data.payments.filter((payment) => !payment.deletedAt).length === 0
 
   const handleProjectChange = (id: string): void => {
-    navigate(`/projects/${id}`)
+    navigate(`/projects/${id}`, { replace: true })
   }
 
   return (
