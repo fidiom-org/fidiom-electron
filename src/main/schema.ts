@@ -1,18 +1,5 @@
 import type Database from 'better-sqlite3-multiple-ciphers'
 
-/**
- * Database schema + migrations for the encrypted store.
- *
- * Versioning uses SQLite's built-in `PRAGMA user_version`. Each entry in
- * `migrations` upgrades the db by exactly one version; `runMigrations` applies
- * every pending one in a transaction, so it is safe to call on every open
- * (a fully-migrated db is a no-op).
- *
- * Conventions: integer surrogate PKs, `REAL` for money (amounts/balances),
- * ISO-8601 `TEXT` timestamps (`datetime('now')`), enums enforced with CHECK,
- * and `ON DELETE CASCADE` from a project down to everything it owns.
- */
-
 const V1 = `
   CREATE TABLE IF NOT EXISTS users (
     id                   INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -196,16 +183,23 @@ const migrateAiChatsToConversations = (db: Database.Database): void => {
   db.exec('DROP TABLE IF EXISTS ai_chats')
 }
 
-/** Ordered migrations; index N upgrades user_version N → N+1. */
+const V3 = `
+  -- app-wide key/value settings (active model, default currency, …)
+  CREATE TABLE IF NOT EXISTS settings (
+    key   TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+  );
+`
+
 const migrations: ((db: Database.Database) => void)[] = [
   (db) => db.exec(V1),
   (db) => {
     db.exec(V2)
     migrateAiChatsToConversations(db)
-  }
+  },
+  (db) => db.exec(V3)
 ]
 
-/** Apply every pending migration. Idempotent — safe to call on every open. */
 export const runMigrations = (db: Database.Database): void => {
   const current = db.pragma('user_version', { simple: true }) as number
   for (let v = current; v < migrations.length; v++) {

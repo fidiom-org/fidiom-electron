@@ -1,9 +1,5 @@
 import { useState } from 'react'
 
-/**
- * useState mirrored to localStorage. Used by the mock auth feature to persist
- * the session across reloads; swap for a real token store later.
- */
 export const useLocalStorage = <T>(key: string, initial: T): [T, (value: T) => void] => {
   const [stored, setStored] = useState<T>(() => {
     try {

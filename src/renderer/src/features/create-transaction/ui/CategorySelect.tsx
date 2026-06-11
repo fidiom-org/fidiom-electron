@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import {
-  CATEGORY_OPTIONS,
-  CATEGORY_PILL,
-  type CategoryOption
-} from '@renderer/entities/transaction'
+import { CATEGORY_PILL, type CategoryOption } from '@renderer/entities/transaction'
+import { useCategories } from '@renderer/features/settings'
 import { useClickOutside } from '@renderer/shared/lib/use-click-outside'
 import { cn } from '@renderer/lib/cn'
 
@@ -87,6 +84,7 @@ const CategoryDropdown = ({
 }
 
 export const CategorySelect = ({ value, onChange }: CategorySelectProps) => {
+  const { categories } = useCategories()
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const rootRef = useRef<HTMLDivElement>(null)
@@ -98,8 +96,8 @@ export const CategorySelect = ({ value, onChange }: CategorySelectProps) => {
 
   useClickOutside(rootRef, close, open)
 
-  const selected = CATEGORY_OPTIONS.find((c) => c.value === value)
-  const filtered = CATEGORY_OPTIONS.filter((c) =>
+  const selected = categories.find((c) => c.value === value)
+  const filtered = categories.filter((c) =>
     c.label.toLowerCase().includes(search.trim().toLowerCase())
   )
 

@@ -13,6 +13,13 @@ const formatChatDate = (iso: string): string => {
   return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
 }
 
+const Loader = ({ label }: { label: string }) => (
+  <div className="flex flex-1 items-center justify-center gap-3 text-sm text-zinc-500">
+    <span className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-700 border-t-zinc-300" />
+    {label}
+  </div>
+)
+
 export const ChatsPage = () => {
   const navigate = useNavigate()
   const { chatId: chatIdParam } = useParams()
@@ -24,6 +31,7 @@ export const ChatsPage = () => {
     messages,
     processing,
     loading,
+    messagesLoading,
     activeChatTitle,
     selectChat,
     createChat,
@@ -31,11 +39,14 @@ export const ChatsPage = () => {
     sendMessage
   } = useChat()
 
+  // Load the chat from the URL only when the id actually changes. selectChat is
+  // re-created on every provider render, so depending on it here would loop.
   useEffect(() => {
-    if (parsedChatId && !Number.isNaN(parsedChatId)) {
+    if (parsedChatId && !Number.isNaN(parsedChatId) && parsedChatId !== activeChatId) {
       void selectChat(parsedChatId)
     }
-  }, [parsedChatId, selectChat])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parsedChatId])
 
   const onSelectChat = (chatId: number): void => {
     navigate(`/chats/${chatId}`)
@@ -53,6 +64,16 @@ export const ChatsPage = () => {
     navigate('/chats')
   }
 
+  if (loading) {
+    return (
+      <div className="-m-8 flex h-[calc(100%+4rem)] min-h-0 flex-col">
+        <div className="flex min-h-0 flex-1 border-t border-zinc-800">
+          <Loader label="Loading chats…" />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="-m-8 flex h-[calc(100%+4rem)] min-h-0 flex-col">
       <div className="flex min-h-0 flex-1 border-t border-zinc-800">
@@ -64,9 +85,7 @@ export const ChatsPage = () => {
             </Button>
           </div>
           <div className="flex-1 overflow-y-auto p-2">
-            {loading && chats.length === 0 ? (
-              <p className="px-2 py-3 text-xs text-zinc-500">Loading…</p>
-            ) : chats.length === 0 ? (
+            {chats.length === 0 ? (
               <p className="px-2 py-3 text-xs text-zinc-500">No conversations yet.</p>
             ) : (
               chats.map((chat) => {
@@ -114,6 +133,8 @@ export const ChatsPage = () => {
             <div className="flex flex-1 items-center justify-center text-sm text-zinc-500">
               Pick a conversation or start a new one.
             </div>
+          ) : messagesLoading ? (
+            <Loader label="Loading conversation…" />
           ) : (
             <>
               <ChatMessageList messages={messages} processing={processing} />

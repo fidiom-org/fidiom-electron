@@ -32,16 +32,12 @@ interface VisionParseResult {
 }
 
 interface VisionModelStatus {
-  /** Weights + vision projector are present in the local cache (no download needed). */
   ready: boolean
-  /** Model is resident in memory this session. */
   loaded: boolean
 }
 
 interface VisionAPI {
-  /** Check whether the model is downloaded/loaded. */
   status: () => Promise<VisionModelStatus>
-  /** Download (and load) the model; emits progress over `onProgress`. */
   download: () => Promise<VisionModelStatus>
   parse: (bytes: Uint8Array, ext: string, prompt?: string) => Promise<VisionParseResult>
   onStream: (cb: (token: string) => void) => () => void
@@ -50,22 +46,13 @@ interface VisionAPI {
 }
 
 interface LlmModelStatus {
-  /** Weights are present in the local cache (no download needed). */
   ready: boolean
-  /** Model is resident in memory this session. */
   loaded: boolean
 }
 
 interface LlmAPI {
-  /** Check whether the chat model is downloaded/loaded. */
   status: () => Promise<LlmModelStatus>
-  /** Download (and load) the model; emits progress over `onProgress`. */
   download: () => Promise<LlmModelStatus>
-  /**
-   * Generate an assistant reply for the chat. Reads the chat history and the
-   * project's financial snapshot from SQLite, streams tokens over `onStream`,
-   * and resolves with the full reply text.
-   */
   infer: (chatId: number) => Promise<string>
   onStream: (cb: (token: string) => void) => () => void
   onProgress: (cb: (percentage: number | null) => void) => () => void
@@ -111,6 +98,27 @@ interface ChatAPI {
   generateTitle: (chatId: number) => Promise<ChatRow>
 }
 
+interface SettingsAPI {
+  get: (key: string) => Promise<string | null>
+  set: (key: string, value: string) => Promise<void>
+}
+
+interface ModelStatusEntry {
+  id: string
+  label: string
+  description: string
+  sizeBytes: number
+  cached: boolean
+  active: boolean
+  loaded: boolean
+}
+
+interface ModelsAPI {
+  list: () => Promise<ModelStatusEntry[]>
+  select: (id: string) => Promise<ModelStatusEntry[]>
+  onProgress: (cb: (percentage: number | null) => void) => () => void
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -121,6 +129,8 @@ declare global {
     visionAPI: VisionAPI
     llmAPI: LlmAPI
     chatAPI: ChatAPI
+    settingsAPI: SettingsAPI
+    modelsAPI: ModelsAPI
   }
 }
 

@@ -173,10 +173,7 @@ export const addPayment = (projectId: string, input: PaymentInput): Payment => {
   return payment
 }
 
-export const updatePayment = (
-  paymentId: string,
-  input: UpdatePaymentInput
-): Payment | null => {
+export const updatePayment = (paymentId: string, input: UpdatePaymentInput): Payment | null => {
   const index = state.payments.findIndex((payment) => payment.id === paymentId)
   if (index === -1) return null
 
@@ -211,10 +208,7 @@ export const updatePayment = (
   return updated
 }
 
-export const deletePayment = (
-  paymentId: string,
-  input: DeletePaymentInput
-): Payment | null => {
+export const deletePayment = (paymentId: string, input: DeletePaymentInput): Payment | null => {
   const index = state.payments.findIndex((payment) => payment.id === paymentId)
   if (index === -1) return null
 

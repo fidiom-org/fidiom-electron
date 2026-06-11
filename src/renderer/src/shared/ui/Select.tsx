@@ -20,7 +20,7 @@ export const Select = ({ label, options, className, id, ref, ...props }: SelectP
         id={id}
         ref={ref}
         className={cn(
-          'w-full rounded-xl bg-zinc-800 px-2 py-3 text-sm text-zinc-100 outline-none',
+          'w-full rounded-xl bg-zinc-800 pl-3 pr-5 py-3 text-sm text-zinc-100 outline-none',
           'focus:ring-2 focus:ring-indigo-500/50',
           className
         )}

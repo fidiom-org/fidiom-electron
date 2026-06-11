@@ -180,7 +180,6 @@ export const updateChatTitle = (
   return chat
 }
 
-/** Rule-based placeholder until the LLM dev wires title generation via QVAC. */
 export const mockGenerateTitle = (chatId: number): ChatRow => {
   const firstUser = secureStore.query<{ content: string }>(
     `SELECT content FROM chat_messages

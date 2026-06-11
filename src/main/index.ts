@@ -6,6 +6,8 @@ import * as secureStore from './secure-store'
 import { registerVisionHandlers } from './vision'
 import { registerChatHandlers } from './chat-handlers'
 import { registerLlmHandlers } from './llm'
+import { registerModelHandlers } from './model-handlers'
+import { registerSettingsHandlers } from './settings-handlers'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -50,6 +52,8 @@ app.whenReady().then(() => {
   registerVisionHandlers()
   registerChatHandlers()
   registerLlmHandlers()
+  registerModelHandlers()
+  registerSettingsHandlers()
 
   createWindow()
 

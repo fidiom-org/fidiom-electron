@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import {
@@ -5,6 +6,7 @@ import {
   type CreateProjectInput,
   type ProjectCurrency
 } from '@renderer/entities/project'
+import { SETTING_KEYS } from '@renderer/features/settings'
 import {
   createProjectSchema,
   type CreateProjectFormInput,
@@ -21,6 +23,20 @@ export const useCreateProject = (onCreated: (projectId: string) => void) => {
       description: ''
     }
   })
+
+  // Seed the currency from the user's saved default, unless they already touched it.
+  useEffect(() => {
+    let active = true
+    window.settingsAPI.get(SETTING_KEYS.defaultCurrency).then((saved) => {
+      if (!active || !saved) return
+      if (!form.formState.dirtyFields.currency && !form.formState.isSubmitted) {
+        form.setValue('currency', saved as CreateProjectFormInput['currency'])
+      }
+    })
+    return () => {
+      active = false
+    }
+  }, [form])
 
   const submit = form.handleSubmit((values) => {
     const input: CreateProjectInput = {

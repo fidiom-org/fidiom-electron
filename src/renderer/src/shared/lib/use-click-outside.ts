@@ -1,9 +1,5 @@
 import { useEffect, type RefObject } from 'react'
 
-/**
- * Calls `handler` on a mousedown outside the element in `ref`. Pass
- * `enabled = false` to skip the listener (e.g. while a popover is closed).
- */
 export function useClickOutside<T extends HTMLElement>(
   ref: RefObject<T | null>,
   handler: () => void,
