@@ -1,3 +1,4 @@
 export const SETTING_KEYS = {
-  defaultCurrency: 'defaultCurrency'
+  defaultCurrency: 'defaultCurrency',
+  transactionCategories: 'transactionCategories'
 } as const
