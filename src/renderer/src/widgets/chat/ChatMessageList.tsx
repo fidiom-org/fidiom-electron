@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import type { ChatMessage } from '@renderer/entities/chat/model/types'
 import { cn } from '@renderer/lib/cn'
+import { FormattedMessage } from './FormattedMessage'
 
 interface ChatMessageListProps {
   messages: ChatMessage[]
@@ -40,7 +41,17 @@ export const ChatMessageList = ({ messages, processing }: ChatMessageListProps) 
                 : 'rounded-bl-md bg-zinc-800 text-zinc-100'
             )}
           >
-            {msg.content || (processing ? '…' : '')}
+            {msg.content ? (
+              msg.role === 'assistant' ? (
+                <FormattedMessage content={msg.content} />
+              ) : (
+                msg.content
+              )
+            ) : processing ? (
+              '…'
+            ) : (
+              ''
+            )}
           </div>
         </div>
       ))}

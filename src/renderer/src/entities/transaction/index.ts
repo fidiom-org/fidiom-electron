@@ -5,4 +5,11 @@ export {
   type TransactionInput
 } from './model/schema'
 export type { Transaction, TransactionType } from './model/types'
-export { CATEGORY_OPTIONS, CATEGORY_PILL, type CategoryOption } from './model/categories'
+export {
+  DEFAULT_CATEGORY_OPTIONS,
+  CATEGORY_COLORS,
+  CATEGORY_PILL,
+  CATEGORY_SWATCH,
+  type CategoryColor,
+  type CategoryOption
+} from './model/categories'

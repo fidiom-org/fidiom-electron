@@ -7,6 +7,7 @@ import {
   type ChatMessage
 } from '@renderer/entities/chat/model/types'
 import { useLocalStorage } from '@renderer/hooks/use-local-storage'
+import { useAuth } from '@renderer/features/auth/AuthContext'
 
 interface ChatContextValue {
   chats: Chat[]
@@ -15,6 +16,7 @@ interface ChatContextValue {
   drawerOpen: boolean
   processing: boolean
   loading: boolean
+  messagesLoading: boolean
   activeChatTitle: string
   openDrawer: () => void
   closeDrawer: () => void
@@ -37,12 +39,14 @@ export const useChat = (): ChatContextValue => {
 const LAST_CHAT_KEY = 'fidiom:lastActiveChatId'
 
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
+  const { unlocked } = useAuth()
   const [chats, setChats] = useState<Chat[]>([])
   const [activeChatId, setActiveChatId] = useLocalStorage<number | null>(LAST_CHAT_KEY, null)
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [processing, setProcessing] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [messagesLoading, setMessagesLoading] = useState(false)
   const inferRef = useRef(false)
 
   const refreshChats = async (): Promise<void> => {
@@ -51,14 +55,19 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const loadChat = async (chatId: number): Promise<void> => {
-    const chat = await window.chatAPI.get(chatId)
-    if (!chat) {
-      setActiveChatId(null)
-      setMessages([])
-      return
+    setMessagesLoading(true)
+    try {
+      const chat = await window.chatAPI.get(chatId)
+      if (!chat) {
+        setActiveChatId(null)
+        setMessages([])
+        return
+      }
+      setActiveChatId(chatId)
+      setMessages(chat.messages.map(mapMessageRow))
+    } finally {
+      setMessagesLoading(false)
     }
-    setActiveChatId(chatId)
-    setMessages(chat.messages.map(mapMessageRow))
   }
 
   const ensureActiveChat = async (): Promise<number> => {
@@ -82,8 +91,20 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     return chat.id
   }
 
+  // Chats live in the encrypted store, which is only readable once the user has
+  // unlocked it. Load when unlocked (and reload on re-unlock); clear in-memory
+  // state on lock so nothing lingers after the session ends.
   useEffect(() => {
+    if (!unlocked) {
+      setChats([])
+      setMessages([])
+      setActiveChatId(null)
+      setLoading(false)
+      return
+    }
+
     let cancelled = false
+    setLoading(true)
     ;(async () => {
       try {
         await refreshChats()
@@ -96,7 +117,8 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       cancelled = true
     }
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unlocked])
 
   const openDrawer = (): void => {
     setDrawerOpen(true)
@@ -206,6 +228,7 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
     drawerOpen,
     processing,
     loading,
+    messagesLoading,
     activeChatTitle,
     openDrawer,
     closeDrawer,

@@ -18,10 +18,22 @@ const ReceiptUpload = ({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [status, setStatus] = useState<Status>('idle')
   const [progress, setProgress] = useState<number | null>(null)
+  const [phase, setPhase] = useState<'downloading' | 'parsing' | null>(null)
   const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => window.visionAPI.onProgress(setProgress), [])
+  useEffect(() => {
+    const offProgress = window.visionAPI.onProgress((pct) => {
+      setProgress(pct)
+      if (pct != null && pct < 100) setPhase('downloading')
+    })
+    // First streamed token means the model is loaded and inference has started.
+    const offStream = window.visionAPI.onStream(() => setPhase('parsing'))
+    return () => {
+      offProgress()
+      offStream()
+    }
+  }, [])
 
   useEffect(() => {
     return () => {
@@ -42,6 +54,7 @@ const ReceiptUpload = ({
     if (!file || status === 'busy') return
     setError('')
     setProgress(null)
+    setPhase(null)
     setStatus('busy')
     try {
       const buffer = await file.arrayBuffer()
@@ -56,7 +69,9 @@ const ReceiptUpload = ({
 
   const busy = status === 'busy'
   const busyLabel =
-    progress != null ? `Downloading model… ${progress.toFixed(0)}%` : 'Reading photo…'
+    phase === 'downloading' && progress != null
+      ? `Downloading model… ${progress.toFixed(0)}%`
+      : 'Parsing receipt…'
 
   return (
     <div className="space-y-4">

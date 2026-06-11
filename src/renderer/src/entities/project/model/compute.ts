@@ -42,7 +42,9 @@ export const computeRevenue = (payments: Payment[], period: DashboardPeriod): nu
 
 export const computeMrr = (payments: Payment[], period: DashboardPeriod): number =>
   sumPayments(
-    getPaymentsInPeriod(payments, period, 'income').filter((payment) => payment.type === 'recurring')
+    getPaymentsInPeriod(payments, period, 'income').filter(
+      (payment) => payment.type === 'recurring'
+    )
   )
 
 const netFlowUpToPeriod = (payments: Payment[], period: DashboardPeriod): number => {
@@ -75,8 +77,11 @@ const netFlowUpToPeriod = (payments: Payment[], period: DashboardPeriod): number
   return net
 }
 
-export const computeCash = (project: Project, payments: Payment[], period: DashboardPeriod): number =>
-  project.initialCash + netFlowUpToPeriod(payments, period)
+export const computeCash = (
+  project: Project,
+  payments: Payment[],
+  period: DashboardPeriod
+): number => project.initialCash + netFlowUpToPeriod(payments, period)
 
 export const computeRunway = (cash: number, burn: number): number | null => {
   if (burn <= 0) return null
@@ -153,10 +158,7 @@ export const formatPaymentField = (value: string | number | null): string => {
   return String(value)
 }
 
-export const summarizePaymentChanges = (
-  before: Payment,
-  after: PaymentInput
-): string | null => {
+export const summarizePaymentChanges = (before: Payment, after: PaymentInput): string | null => {
   const fields: Array<{ key: keyof PaymentInput; label: string }> = [
     { key: 'vendor', label: 'vendor' },
     { key: 'amount', label: 'amount' },

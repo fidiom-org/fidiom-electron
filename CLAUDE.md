@@ -44,9 +44,9 @@ Tailwind v4 is wired through the `@tailwindcss/vite` plugin (see `electron.vite.
 ### Renderer layout (`src/renderer/src/`)
 
 - `main.tsx` — entry: `createRoot` → `AuthProvider` → `RouterProvider`. (Distinct from `pages/main.tsx`.)
-- `lib/router.tsx` — route table via `createHashRouter`. **HashRouter is required** because the production build loads from `file://`. Routes: `/auth` (public) and `/` (the dashboard, behind `ProtectedRoute`).
-- `pages/` — route components: `auth.tsx` (mock login), `main.tsx` (dashboard).
-- `features/auth/` — `AuthContext` (mock login persisted to localStorage via `useLocalStorage`) + `ProtectedRoute` guard. `login()` is a stub — wire it to real auth later.
+- `lib/router.tsx` — route table via `createHashRouter`. **HashRouter is required** because the production build loads from `file://`. Routes: `/auth` and `/reset` (public) and `/`, `/projects`, `/projects/:projectId`, `/chats`, `/chats/:chatId` (behind `ProtectedRoute`).
+- `pages/` — route components: `auth.tsx` (master-key setup/unlock), `main.tsx` (dashboard).
+- `features/auth/` — `AuthContext` + `ProtectedRoute` guard. **Not a mock** — it drives the real secure-store via `window.authAPI` (`status` / `setup` / `unlock` / `lock` / `reset`, IPC `auth:*` → `src/main/secure-store.ts`). Session state is `{ initialized, unlocked }` read from `authAPI.status()`; the master key unlocks the encrypted SQLite DB in the main process and never touches localStorage. `ProtectedRoute` renders the app only when `unlocked`.
 - `components/ui/` (Button, Input, Card) and `components/layout/AppShell` (sidebar + topbar shell). `lib/cn.ts` is the className joiner.
 - `App.tsx` — the legacy QVAC chat, not mounted by any route.
 

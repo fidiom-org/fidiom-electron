@@ -1,9 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import {
-  computeExpenseSlices,
-  computeKpi,
-  computeMonthlyTotals
-} from './compute'
+import { computeExpenseSlices, computeKpi, computeMonthlyTotals } from './compute'
 import { getSnapshot, subscribe } from './store'
 import type { DashboardPeriod, Payment, Project, ProjectDashboardData } from './types'
 

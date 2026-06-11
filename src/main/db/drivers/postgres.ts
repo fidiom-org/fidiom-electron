@@ -36,7 +36,6 @@ export function createPostgresDriver(config: DbConfig): Database {
   }
 }
 
-/** Hide credentials before exposing the connection target to the UI. */
 function maskUrl(url: string): string {
   try {
     const u = new URL(url)
