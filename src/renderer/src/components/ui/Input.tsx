@@ -16,7 +16,7 @@ export const Input = ({ label, className, id, ref, ...props }: InputProps) => {
         id={id}
         ref={ref}
         className={cn(
-          'w-full rounded-xl bg-zinc-800 px-4 py-3 text-sm text-zinc-100 outline-none',
+          'mt-1 w-full rounded-xl bg-zinc-800 px-4 py-3 text-sm text-zinc-100 outline-none',
           'placeholder:text-zinc-500 focus:ring-2 focus:ring-indigo-500/50',
           className
         )}

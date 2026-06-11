@@ -9,12 +9,6 @@ interface FormFieldProps {
   children: (field: ControllerRenderProps<FieldValues, string>) => ReactNode
 }
 
-/**
- * One form row: label (+ optional required mark), the control wired through a
- * Controller, and the field's validation error. Use inside <Form>. The render
- * prop receives RHF's `field` ({ value, onChange, onBlur, name, ref }) — spread
- * it onto a native input or pass value/onChange to a custom control.
- */
 export const FormField = ({ name, label, required, children }: FormFieldProps) => {
   const {
     control,

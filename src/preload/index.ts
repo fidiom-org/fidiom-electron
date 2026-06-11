@@ -94,6 +94,22 @@ if (process.contextIsolated) {
         ipcRenderer.invoke('chat:updateTitle', chatId, title, titleStatus),
       generateTitle: (chatId: number) => ipcRenderer.invoke('chat:generateTitle', chatId)
     })
+
+    contextBridge.exposeInMainWorld('settingsAPI', {
+      get: (key: string): Promise<string | null> => ipcRenderer.invoke('settings:get', key),
+      set: (key: string, value: string): Promise<void> =>
+        ipcRenderer.invoke('settings:set', key, value)
+    })
+
+    contextBridge.exposeInMainWorld('modelsAPI', {
+      list: () => ipcRenderer.invoke('models:list'),
+      select: (id: string) => ipcRenderer.invoke('models:select', id),
+      onProgress: (cb: (percentage: number | null) => void): (() => void) => {
+        const listener = (_event: unknown, percentage: number | null): void => cb(percentage)
+        ipcRenderer.on('models:progress', listener)
+        return () => ipcRenderer.removeListener('models:progress', listener)
+      }
+    })
   } catch (error) {
     console.error(error)
   }

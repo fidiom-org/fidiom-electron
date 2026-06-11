@@ -1,20 +1,5 @@
 import { BrowserWindow, ipcMain } from 'electron'
 
-/**
- * QVAC on-device LLM handlers.
- *
- * Relocated here from the renderer entry (src/renderer/src/main.tsx), where it
- * was mis-placed — Electron main APIs and @qvac/sdk must run in the main process.
- *
- * NOT WIRED YET: `@qvac/sdk` is not installed and these handlers are not
- * registered (see src/main/index.ts). To enable:
- *   1. `yarn add @qvac/sdk`
- *   2. uncomment the import + SDK calls below
- *   3. call `registerQvacHandlers(win)` from app.whenReady() in index.ts
- */
-
-// import { LLAMA_3_2_1B_INST_Q4_0, loadModel, unloadModel, completion } from '@qvac/sdk'
-
 let modelId: string | null = null
 
 export function registerQvacHandlers(win: BrowserWindow): void {

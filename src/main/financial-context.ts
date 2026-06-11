@@ -1,14 +1,5 @@
 import * as secureStore from './secure-store'
 
-/**
- * Builds a compact, plain-text snapshot of a project's finances for the on-device
- * LLM to ground its answers in. Everything here comes straight from the encrypted
- * SQLite store, so the model never sees data the user has not unlocked.
- *
- * Kept deliberately small (recent rows + aggregates) so it fits comfortably inside
- * the model's context window alongside the chat history.
- */
-
 interface ProjectRow {
   id: number
   name: string

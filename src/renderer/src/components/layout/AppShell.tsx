@@ -2,14 +2,16 @@ import type { ReactNode } from 'react'
 import { NavLink, useMatches } from 'react-router-dom'
 import { useAuth } from '@renderer/features/auth/AuthContext'
 import { Button } from '@renderer/components/ui/Button'
-import { cn } from '@renderer/lib/cn'
 import { ChartColumn, Database, FolderKanban, Settings } from 'lucide-react'
+import { cn } from '@renderer/lib/cn'
+
+import logoImg from '../../../../../resources/icon.png'
 
 const nav = [
   { label: 'Dashboard', icon: <ChartColumn />, path: '/' },
   { label: 'Projects', icon: <FolderKanban />, path: '/projects' },
   { label: 'Models', icon: <Database />, path: '/chats' },
-  { label: 'Settings', icon: <Settings />, path: null }
+  { label: 'Settings', icon: <Settings />, path: '/settings' }
 ]
 
 interface RouteHandle {
@@ -33,9 +35,7 @@ export const AppShell = ({ children }: AppShellProps) => {
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
       <aside className="flex w-60 flex-col border-r border-zinc-800 bg-zinc-900/40 p-4">
         <div className="mb-8 flex items-center gap-2 px-2">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-indigo-600 text-sm font-bold">
-            F
-          </span>
+          <img src={logoImg} alt="Fidiom" className="h-8 w-8 rounded-xl" />
           <span className="font-semibold">Fidiom</span>
         </div>
         <nav className="space-y-1">
