@@ -79,7 +79,25 @@ if (process.contextIsolated) {
         ipcRenderer.on('llm:progress', listener)
         return () => ipcRenderer.removeListener('llm:progress', listener)
       },
+      onTool: (cb: (tool: { name: string; arguments: unknown }) => void): (() => void) => {
+        const listener = (_event: unknown, tool: { name: string; arguments: unknown }): void =>
+          cb(tool)
+        ipcRenderer.on('llm:tool', listener)
+        return () => ipcRenderer.removeListener('llm:tool', listener)
+      },
       unload: (): Promise<void> => ipcRenderer.invoke('llm:unload')
+    })
+
+    contextBridge.exposeInMainWorld('speechAPI', {
+      transcribe: (pcm: Uint8Array): Promise<string> =>
+        ipcRenderer.invoke('speech:transcribe', pcm),
+      speak: (text: string): Promise<Uint8Array> => ipcRenderer.invoke('speech:speak', text),
+      onProgress: (cb: (percentage: number | null) => void): (() => void) => {
+        const listener = (_event: unknown, percentage: number | null): void => cb(percentage)
+        ipcRenderer.on('speech:progress', listener)
+        return () => ipcRenderer.removeListener('speech:progress', listener)
+      },
+      unload: (): Promise<void> => ipcRenderer.invoke('speech:unload')
     })
 
     contextBridge.exposeInMainWorld('chatAPI', {

@@ -1,9 +1,10 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, session } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import * as secureStore from './secure-store'
 import { registerVisionHandlers } from './vision'
+import { registerSpeechHandlers } from './speech'
 import { registerChatHandlers } from './chat-handlers'
 import { registerLlmHandlers } from './llm'
 import { registerModelHandlers } from './model-handlers'
@@ -47,9 +48,14 @@ app.whenReady().then(() => {
 
   ipcMain.on('ping', () => console.log('pong'))
 
+  session.defaultSession.setPermissionRequestHandler((_wc, permission, callback) => {
+    callback(permission === 'media')
+  })
+
   registerAuthHandlers()
   registerDbHandlers()
   registerVisionHandlers()
+  registerSpeechHandlers()
   registerChatHandlers()
   registerLlmHandlers()
   registerModelHandlers()

@@ -73,7 +73,7 @@ const loadOption = async (
     const id = await loadModel({
       modelSrc: option.model,
       modelType: 'llm',
-      modelConfig: { ctx_size: CTX_SIZE, projectionModelSrc: option.mmproj },
+      modelConfig: { ctx_size: CTX_SIZE, projectionModelSrc: option.mmproj, tools: true },
       onProgress: (update) => onProgress(overallPercentage(update))
     })
     modelId = id

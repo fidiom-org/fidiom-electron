@@ -2,16 +2,13 @@ import { useEffect, useState } from 'react'
 import { DEFAULT_CATEGORY_OPTIONS, type CategoryOption } from '@renderer/entities/transaction'
 import { SETTING_KEYS } from './keys'
 
-/**
- * Transaction categories are persisted as a JSON array in the encrypted
- * settings table. When nothing is stored yet (or the value is corrupt) we fall
- * back to the built-in defaults so the rest of the app always has a list to use.
- */
 const parse = (raw: string | null): CategoryOption[] => {
   if (!raw) return DEFAULT_CATEGORY_OPTIONS
   try {
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) && parsed.length > 0 ? (parsed as CategoryOption[]) : DEFAULT_CATEGORY_OPTIONS
+    return Array.isArray(parsed) && parsed.length > 0
+      ? (parsed as CategoryOption[])
+      : DEFAULT_CATEGORY_OPTIONS
   } catch {
     return DEFAULT_CATEGORY_OPTIONS
   }

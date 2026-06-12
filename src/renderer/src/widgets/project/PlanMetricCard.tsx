@@ -63,9 +63,7 @@ export const PlanMetricCard = ({ row, currency, showActual }: PlanMetricCardProp
         <div>
           <p className="text-xs text-zinc-500">Actual</p>
           <p className="mt-1 text-sm font-semibold text-zinc-100">
-            {showActual
-              ? formatPlanMetricValue(row.metric, row.actual, currency)
-              : '—'}
+            {showActual ? formatPlanMetricValue(row.metric, row.actual, currency) : '—'}
           </p>
         </div>
       </div>

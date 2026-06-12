@@ -73,8 +73,7 @@ export const getProjectEmployees = (projectId: string): Employee[] =>
 export const getProjectPlanTargets = (projectId: string, period: PlanPeriod): PlanTarget[] => {
   const key = planPeriodStorageKey(period)
   return state.planTargets.filter(
-    (target) =>
-      target.projectId === projectId && planPeriodStorageKey(target.period) === key
+    (target) => target.projectId === projectId && planPeriodStorageKey(target.period) === key
   )
 }
 
@@ -88,8 +87,7 @@ export const saveProjectPlanTargets = (
   const timestamp = new Date().toISOString()
 
   const rest = state.planTargets.filter(
-    (target) =>
-      !(target.projectId === projectId && planPeriodStorageKey(target.period) === key)
+    (target) => !(target.projectId === projectId && planPeriodStorageKey(target.period) === key)
   )
 
   const next = inputs.map((input) => ({
@@ -110,10 +108,7 @@ export const saveProjectPlanTargets = (
   emit()
 }
 
-export const getProjectPlan = (
-  projectId: string,
-  period: PlanPeriod
-): ProjectPlanData | null => {
+export const getProjectPlan = (projectId: string, period: PlanPeriod): ProjectPlanData | null => {
   const project = getProject(projectId)
   if (!project) return null
 

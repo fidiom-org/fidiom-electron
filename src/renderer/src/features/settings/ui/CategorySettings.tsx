@@ -26,7 +26,9 @@ const ColorPicker = ({
         className={cn(
           'h-5 w-5 rounded-full transition-transform',
           CATEGORY_SWATCH[color],
-          value === color ? 'ring-2 ring-zinc-100 ring-offset-2 ring-offset-zinc-900' : 'opacity-60 hover:opacity-100'
+          value === color
+            ? 'ring-2 ring-zinc-100 ring-offset-2 ring-offset-zinc-900'
+            : 'opacity-60 hover:opacity-100'
         )}
       />
     ))}
@@ -81,10 +83,7 @@ export const CategorySettings = () => {
   }
 
   const add = (): void => {
-    void save([
-      ...categories,
-      { value: `cat-${Date.now()}`, label: '', color: 'zinc', icon: '🏷️' }
-    ])
+    void save([...categories, { value: `cat-${Date.now()}`, label: '', color: 'zinc', icon: '🏷️' }])
   }
 
   return (

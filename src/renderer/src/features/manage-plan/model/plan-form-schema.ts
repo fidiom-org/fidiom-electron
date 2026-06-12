@@ -7,13 +7,11 @@ import {
   type PlanTargetOperator
 } from '@renderer/entities/project'
 
-const optionalNumber = z
-  .union([z.string(), z.number()])
-  .transform((value) => {
-    if (value === '' || value === null || value === undefined) return null
-    const parsed = typeof value === 'number' ? value : Number(value)
-    return Number.isFinite(parsed) ? parsed : null
-  })
+const optionalNumber = z.union([z.string(), z.number()]).transform((value) => {
+  if (value === '' || value === null || value === undefined) return null
+  const parsed = typeof value === 'number' ? value : Number(value)
+  return Number.isFinite(parsed) ? parsed : null
+})
 
 export const planFormSchema = z.object({
   revenue: optionalNumber,

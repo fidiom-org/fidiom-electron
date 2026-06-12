@@ -21,9 +21,7 @@ export const ProjectNav = ({ projectId }: ProjectNavProps) => {
           className={({ isActive }) =>
             cn(
               'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
-              isActive
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-zinc-200'
+              isActive ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:text-zinc-200'
             )
           }
         >

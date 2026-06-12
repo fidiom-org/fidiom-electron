@@ -1,9 +1,5 @@
 import { computeKpi } from './compute'
-import {
-  expandPlanPeriodToMonths,
-  isPlanPeriodCurrent,
-  isPlanPeriodPast
-} from './plan-period'
+import { expandPlanPeriodToMonths, isPlanPeriodCurrent, isPlanPeriodPast } from './plan-period'
 import type { PlanPeriod } from './plan-period'
 import {
   PLAN_METRIC_LABELS,
@@ -50,21 +46,13 @@ export const aggregateMetricValue = (
   }
 }
 
-const meetsTarget = (
-  value: number,
-  target: number,
-  operator: PlanTargetOperator
-): boolean => {
+const meetsTarget = (value: number, target: number, operator: PlanTargetOperator): boolean => {
   if (operator === 'gte') return value >= target
   if (operator === 'lte') return value <= target
   return value === target
 }
 
-const variancePct = (
-  value: number,
-  target: number,
-  operator: PlanTargetOperator
-): number => {
+const variancePct = (value: number, target: number, operator: PlanTargetOperator): number => {
   if (target === 0) return 0
 
   if (operator === 'lte') {

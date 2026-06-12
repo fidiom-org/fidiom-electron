@@ -56,6 +56,7 @@ interface LlmAPI {
   infer: (chatId: number) => Promise<string>
   onStream: (cb: (token: string) => void) => () => void
   onProgress: (cb: (percentage: number | null) => void) => () => void
+  onTool: (cb: (tool: { name: string; arguments: unknown }) => void) => () => void
   unload: () => Promise<void>
 }
 
@@ -119,6 +120,13 @@ interface ModelsAPI {
   onProgress: (cb: (percentage: number | null) => void) => () => void
 }
 
+interface SpeechAPI {
+  transcribe: (pcm: Uint8Array) => Promise<string>
+  speak: (text: string) => Promise<Uint8Array>
+  onProgress: (cb: (percentage: number | null) => void) => () => void
+  unload: () => Promise<void>
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
@@ -127,6 +135,7 @@ declare global {
     dbAPI: DbAPI
     qvacAPI: QvacAPI
     visionAPI: VisionAPI
+    speechAPI: SpeechAPI
     llmAPI: LlmAPI
     chatAPI: ChatAPI
     settingsAPI: SettingsAPI

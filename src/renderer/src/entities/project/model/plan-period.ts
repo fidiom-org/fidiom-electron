@@ -58,9 +58,7 @@ export const isPlanPeriodPast = (period: PlanPeriod): boolean => {
   const months = expandPlanPeriodToMonths(period)
   const last = months[months.length - 1]
 
-  return (
-    last.year < currentYear || (last.year === currentYear && last.month < currentMonth)
-  )
+  return last.year < currentYear || (last.year === currentYear && last.month < currentMonth)
 }
 
 export const isPlanPeriodCurrent = (period: PlanPeriod): boolean => {

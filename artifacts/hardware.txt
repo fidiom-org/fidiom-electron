@@ -1,0 +1,23 @@
+# Hardware proof — generated 2026-06-12T11:37:47Z
+uname: Darwin Oleksandrs-MacBook-Pro.local 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:39:29 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T8142 arm64
+
+## CPU
+Apple M5
+cores: 10
+## Memory
+32768 MB
+## Model
+Mac17,2
+## GPU / Chip
+Model Name: MacBook Pro
+Chip: Apple M5
+Total Number of Cores: 10 (4 Super and 6 Efficiency)
+Memory: 32 GB
+Chipset Model: Apple M5
+Total Number of Cores: 10
+Vendor: Apple (0x106b)
+Metal Support: Metal 4
+
+## Disk
+Filesystem      Size    Used   Avail Capacity iused ifree %iused  Mounted on
+/dev/disk3s5   926Gi   193Gi   710Gi    22%    3.5M  7.4G    0%   /System/Volumes/Data
