@@ -1,0 +1,75 @@
+schema_version: 1
+application: fidiom-electron
+summary: >-
+  Local-first desktop finance app. No remote AI inference. The only remote
+  calls are one-time on-device model-weight downloads performed by the QVAC
+  SDK, plus passthrough of user-clicked links to the system browser.
+
+cloud_ai_apis: [] # none — all inference is on-device via @qvac/sdk
+
+remote_calls:
+  - id: qvac-model-download
+    name: QVAC model / asset download
+    category: model-weights # non-AI: weight fetching only; inference is local
+    required: true # needed once on first use of each model
+    provider: Tether QVAC SDK (@qvac/sdk)
+    initiated_by:
+      - src/main/llm.ts # ipcMain 'llm:download' -> loadModel()
+      - src/main/vision.ts # ipcMain 'vision:download' -> loadModel()
+      - src/main/model.ts # loadModel / getModelInfo / modelDownloadSize
+      - src/main/embeddings.ts # loadModel(EMBEDDINGGEMMA_300M_Q4_0)
+      - src/main/speech.ts # Whisper (STT) + Supertonic (TTS) assets
+    sdk_functions:
+      - loadModel
+      - downloadAsset
+      - getModelInfo
+    host: >-
+      Resolved at runtime by the QVAC SDK model registry (Tether QVAC
+      infrastructure); not hardcoded in this repository. See
+      https://docs.qvac.tether.io/
+    data_sent: Model identifier / asset request only. No user or financial data.
+    data_received: GGUF model weights + projector files, cached locally on disk.
+    frequency: One-time per model, then served from local cache.
+    models:
+      - Qwen3-VL 2B (default chat + receipts)
+      - SmolVLM2 500M (low-memory chat + receipts)
+      - Gemma 4B (high-quality chat + receipts)
+      - EmbeddingGemma 300M (RAG embeddings)
+      - Whisper base (speech-to-text)
+      - Supertonic EN (text-to-speech)
+
+  - id: open-external-link
+    name: System-browser link passthrough
+    category: os-handoff
+    required: false
+    provider: Operating system default browser
+    initiated_by:
+      - src/main/index.ts # shell.openExternal(details.url)
+    host: User-clicked URL only — the app makes no request itself; the OS
+      browser does. Not an outbound API call by the app process.
+    data_sent: None by the app.
+    data_received: None by the app.
+
+# Configured but NOT active at runtime — listed for completeness/transparency.
+inactive_or_placeholder:
+  - id: auto-update-feed
+    name: Electron auto-update feed
+    status: placeholder-not-invoked
+    provider: electron-updater (generic provider)
+    configured_in:
+      - electron-builder.yml # publish.url
+      - dev-app-update.yml # url
+    host: https://example.com/auto-updates # placeholder; not a real endpoint
+    note: >-
+      autoUpdater is never called in src/main (no checkForUpdates / setFeedURL),
+      so no update request is made at runtime. The URL is a leftover template
+      placeholder. Remove the publish block / dev-app-update.yml or point it at
+      a real host before shipping auto-updates.
+
+notes:
+  - All AI inference, embeddings, RAG, multimodal, STT and TTS are performed
+    locally via @qvac/sdk — there are no remote inference calls.
+  - The renderer process makes no network calls; it reaches the main process
+    only through IPC (window.authAPI / dbAPI / chatAPI / llmAPI / visionAPI /
+    speechAPI / modelsAPI / settingsAPI).
+  - Financial data and receipt images never leave the device.
