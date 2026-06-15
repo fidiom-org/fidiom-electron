@@ -97,6 +97,45 @@ interface SettingsAPI {
   set: (key: string, value: string) => Promise<void>
 }
 
+interface P2PPairingInfo {
+  publicKey: string
+  wsUrl: string
+  port: number
+}
+
+interface P2PConnectionInfo {
+  remoteKey: string
+  connectedAt: number
+  lastSeen: number
+}
+
+interface P2PStatus extends Partial<P2PPairingInfo> {
+  running: boolean
+  startedAt: number | null
+  connections: P2PConnectionInfo[]
+}
+
+type P2PEvent =
+  | { type: 'p2p:connection'; remoteKey: string; connectedAt: number }
+  | { type: 'p2p:disconnect'; remoteKey: string }
+  | { type: 'p2p:walletEvent'; remoteKey: string; name: string; data: unknown }
+
+interface P2PAPI {
+  start: () => Promise<P2PPairingInfo>
+  status: () => Promise<P2PStatus>
+  pairingInfo: () => Promise<P2PPairingInfo | null>
+  connections: () => Promise<P2PConnectionInfo[]>
+  request: <T = unknown>(
+    remoteKey: string,
+    method: string,
+    params?: unknown,
+    timeoutMs?: number
+  ) => Promise<T>
+  ping: (remoteKey: string) => Promise<number>
+  stop: () => Promise<void>
+  onEvent: (cb: (event: P2PEvent) => void) => () => void
+}
+
 interface ModelStatusEntry {
   id: string
   label: string
@@ -274,6 +313,7 @@ declare global {
     llmAPI: LlmAPI
     chatAPI: ChatAPI
     settingsAPI: SettingsAPI
+    p2pAPI: P2PAPI
     modelsAPI: ModelsAPI
     exportAPI: ExportAPI
     documentsAPI: DocumentsAPI

@@ -17,7 +17,13 @@ interface CategoryDropdownProps {
   onSelect: (value: string) => void
 }
 
-const CategoryDropdown = ({ search, onSearchChange, options, value, onSelect }: CategoryDropdownProps) => {
+const CategoryDropdown = ({
+  search,
+  onSearchChange,
+  options,
+  value,
+  onSelect
+}: CategoryDropdownProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {

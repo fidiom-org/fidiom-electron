@@ -132,15 +132,67 @@ Selectable in **Settings → Models** (`model-registry.ts`):
 
 ---
 
+## Wallet connection (P2P)
+
+Fidiom can pair with a **[WDK](https://docs.wdk.tether.io/) wallet browser
+extension** over an **encrypted peer‑to‑peer channel** so the app can read your
+addresses/balances and request signatures — **without custodying any keys**. The
+app holds no seed and no funds; every signature is approved inside the wallet.
+
+This is **optional**. If you never open the **Wallet** page, the app makes no
+P2P/DHT network calls.
+
+### How the channel works
+
+The wallet runs in a Chrome MV3 service worker, which has no raw UDP sockets and
+so can't be a native Hyperswarm peer. We bridge it with Holepunch's
+[`@hyperswarm/dht-relay`](https://github.com/holepunchto/dht-relay):
+
+```
+WDK extension (service worker)          Fidiom (Electron main, full Node)
+  dht-relay light client                  hyperdht node + key-addressed server
+        │  browser WebSocket  ─────────▶   @hyperswarm/dht-relay WS relay (127.0.0.1)
+        └────────── end-to-end Noise secret-stream ──────────┘
+                 length-prefixed JSON-RPC over the stream
+        identify · getAccounts · getBalances · sign (popup-gated)
+```
+
+- The app runs a `hyperdht` node and a **localhost‑only** WebSocket relay
+  (`ws://127.0.0.1:49737`, falling back to 49738/49739). The extension connects
+  the relay over a WebSocket and reaches the app by its **public key**.
+- The resulting **Noise secret‑stream is end‑to‑end encrypted** — the relay sees
+  only ciphertext. Peer discovery uses the public Hyperswarm DHT (declared in
+  [`remote-apis.yaml`](remote-apis.yaml) as `hyperswarm-dht-bootstrap`).
+- Pairing is restricted to **localhost** in this build (same‑machine scope).
+- **Signing is always popup‑gated** in the wallet; the app can only _request_ it.
+
+Code: `src/main/p2p.ts` (transport/RPC core), `src/main/p2p-handlers.ts` (IPC),
+renderer feature `src/renderer/src/features/wallet/`, page `/wallet`.
+
+### Try it
+
+1. Open the **Wallet** page in the sidebar. Copy the **App identity** (public
+   key) and **Relay address**.
+2. In the WDK extension popup → **Paired apps** → paste both → **Pair**.
+3. The Wallet page shows the live connection: wallet label + addresses,
+   connection latency, uptime, Spark balance, and a **Sign** test that pops an
+   approval in the wallet.
+
+> The WDK wallet extension is a **separate** companion project (its own repo).
+> Fidiom only needs that extension installed and unlocked to pair.
+
+---
+
 ## Architecture
 
 Three-process Electron split, each with its own tsconfig:
 
 - **Main** (`src/main/`) — `BrowserWindow`, IPC, the encrypted SQLite store
-  (`secure-store.ts`), and **all QVAC calls**.
+  (`secure-store.ts`), **all QVAC calls**, and the **P2P wallet bridge**
+  (`p2p.ts` / `p2p-handlers.ts`).
 - **Preload** (`src/preload/`) — `contextBridge` exposes `window.authAPI`,
   `dbAPI`, `chatAPI`, `llmAPI`, `visionAPI`, `speechAPI`, `modelsAPI`,
-  `settingsAPI`.
+  `settingsAPI`, `p2pAPI`.
 - **Renderer** (`src/renderer/`) — React + Tailwind v4, hash-routed
   (auth gate → dashboard / projects / chats / settings).
 
@@ -155,6 +207,10 @@ never touches the DB or QVAC directly — it goes through IPC.
 - On-device inference only — no network calls for AI.
 - Financial data is encrypted at rest with a key derived from your master key.
 - Receipt images are read on-device and never uploaded.
+- The optional wallet P2P channel is **non-AI** and **end-to-end encrypted**; it
+  carries no financial, receipt, or model data, and custodies no keys/funds.
+  Its only remote dependency (the Hyperswarm DHT for peer discovery) is declared
+  in [`remote-apis.yaml`](remote-apis.yaml).
 
 ---
 

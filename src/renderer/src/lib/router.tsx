@@ -8,8 +8,9 @@ import { MainPage } from '@renderer/pages/main'
 import { ProjectDashboardPage } from '@renderer/pages/project-dashboard'
 import { ProjectPlanPage } from '@renderer/pages/project-plan'
 import { ProjectsPage } from '@renderer/pages/projects'
-import { TransactionsPage } from '@renderer/pages/transactions'  
+import { TransactionsPage } from '@renderer/pages/transactions'
 import { SettingsPage } from '@renderer/pages/settings'
+import { WalletPage } from '@renderer/pages/wallet'
 
 export const router = createHashRouter([
   { path: '/auth', element: <AuthPage /> },
@@ -47,6 +48,7 @@ export const router = createHashRouter([
             element: <ChatsPage />,
             handle: { title: 'AI Chats' }
           },
+          { path: '/wallet', element: <WalletPage />, handle: { title: 'Wallet' } },
           { path: '/settings', element: <SettingsPage />, handle: { title: 'Settings' } }
         ]
       }

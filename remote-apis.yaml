@@ -1,9 +1,11 @@
 reschema_version: 1
 application: fidiom-electron
 summary: >-
-  Local-first desktop finance app. No remote AI inference. The only remote
-  calls are one-time on-device model-weight downloads performed by the QVAC
-  SDK, plus passthrough of user-clicked links to the system browser.
+  Local-first desktop finance app. No remote AI inference. Remote calls are:
+  one-time on-device model-weight downloads performed by the QVAC SDK;
+  passthrough of user-clicked links to the system browser; and — only when the
+  optional wallet-pairing feature is used — the public Hyperswarm DHT for
+  peer discovery / NAT traversal (non-AI P2P networking).
 
 cloud_ai_apis: [] # none — all inference is on-device via @qvac/sdk
 
@@ -38,6 +40,35 @@ remote_calls:
       - Whisper base (speech-to-text)
       - Supertonic EN (text-to-speech)
 
+  - id: hyperswarm-dht-bootstrap
+    name: Hyperswarm DHT bootstrap (P2P wallet pairing)
+    category: p2p-networking # non-AI: decentralized peer discovery / NAT traversal
+    required: false # only used by the optional wallet-pairing feature (/wallet)
+    provider: Holepunch Hyperswarm public DHT (hyperdht)
+    initiated_by:
+      - src/main/p2p.ts # new DHT(); createServer().listen(keyPair); peer routing
+      - src/main/p2p-handlers.ts # ipcMain 'p2p:start' -> startP2P()
+    sdk_functions:
+      - hyperdht (new DHT, createServer, connect)
+      - '@hyperswarm/dht-relay (localhost-only WebSocket relay for the wallet)'
+    host: >-
+      UDP to the default Hyperswarm DHT bootstrap nodes
+      (node1.hyperdht.org:49737, node2.hyperdht.org:49737,
+      node3.hyperdht.org:49737); overridable via the DHT `bootstrap` option.
+    data_sent: >-
+      The app's P2P public key (pairing topic) and transport address, used only
+      for peer discovery / hole-punching. The wallet payload travels over an
+      end-to-end Noise secret-stream, so the bootstrap nodes and the relay see
+      only ciphertext. No financial, account, receipt, or model data.
+    data_received: Peer routing info needed to establish the direct connection.
+    frequency: Only while the /wallet pairing feature is active (relay running).
+    note: >-
+      The wallet extension connects to this app through a localhost-only
+      WebSocket relay (ws://127.0.0.1:<port>) — that hop is not remote. Pairing
+      is restricted to localhost in this build (same-machine scope), so the only
+      outbound traffic is DHT bootstrap. Funds are never custodied here; the app
+      asks the wallet to sign, and signing requires explicit in-wallet approval.
+
   - id: open-external-link
     name: System-browser link passthrough
     category: os-handoff
@@ -71,5 +102,9 @@ notes:
     locally via @qvac/sdk — there are no remote inference calls.
   - The renderer process makes no network calls; it reaches the main process
     only through IPC (window.authAPI / dbAPI / chatAPI / llmAPI / visionAPI /
-    speechAPI / modelsAPI / settingsAPI).
+    speechAPI / modelsAPI / settingsAPI / p2pAPI).
   - Financial data and receipt images never leave the device.
+  - The wallet-pairing feature (/wallet) is optional. With it disabled/unused,
+    the app makes no P2P/DHT network calls at all. It custodies no keys or
+    funds — it talks to an external WDK wallet over an encrypted P2P channel and
+    every signature is approved inside that wallet.

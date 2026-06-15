@@ -146,7 +146,9 @@ export const computeDashboardData = (
   const expenseSlices = mergeSlices(
     scopedProjects.flatMap((project) => {
       const projectPayments = scopedPayments.filter((payment) => payment.projectId === project.id)
-      const projectEmployees = scopedEmployees.filter((employee) => employee.projectId === project.id)
+      const projectEmployees = scopedEmployees.filter(
+        (employee) => employee.projectId === project.id
+      )
       return computeExpenseSlices(projectPayments, projectEmployees, period)
     })
   )

@@ -1,8 +1,4 @@
-import {
-  computeExpenseSlices,
-  computeKpi,
-  computeMonthlyTotals
-} from './compute'
+import { computeExpenseSlices, computeKpi, computeMonthlyTotals } from './compute'
 import { computeProjectPlan } from './plan-compute'
 import { normalizePlanPeriod, planPeriodStorageKey } from './plan-period'
 import type { PlanPeriod } from './plan-period'

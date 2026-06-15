@@ -1,9 +1,6 @@
 import { randomUUID } from 'crypto'
 import * as secureStore from './secure-store'
-import {
-  summarizeEmployeeChanges,
-  summarizePaymentChanges
-} from './finance-compute'
+import { summarizeEmployeeChanges, summarizePaymentChanges } from './finance-compute'
 import type {
   ChangeRecord,
   CreateProjectInput,

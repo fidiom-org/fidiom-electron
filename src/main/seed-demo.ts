@@ -89,13 +89,7 @@ const seedWithConnection = (conn: Database.Database): SeedDemoResult => {
   for (const employee of DEMO_EMPLOYEES) {
     const projectId = projectIds.get(employee.projectKey)
     if (!projectId) continue
-    insertEmployee.run(
-      employee.id,
-      projectId,
-      employee.name,
-      employee.salary,
-      employee.createdAt
-    )
+    insertEmployee.run(employee.id, projectId, employee.name, employee.salary, employee.createdAt)
   }
 
   const insertPlanTarget = conn.prepare(

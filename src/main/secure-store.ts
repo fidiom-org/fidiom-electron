@@ -46,7 +46,9 @@ function baseDir(): string {
 }
 
 function dbFile(): string {
-  return process.env.SQLITE_PATH ?? (app.isPackaged ? join(baseDir(), 'app.sqlite') : devDbFilePath())
+  return (
+    process.env.SQLITE_PATH ?? (app.isPackaged ? join(baseDir(), 'app.sqlite') : devDbFilePath())
+  )
 }
 
 function metaFile(): string {

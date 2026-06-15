@@ -144,6 +144,22 @@ if (process.contextIsolated) {
         ipcRenderer.invoke('projects:savePlanTargets', projectId, period, inputs)
     })
 
+    contextBridge.exposeInMainWorld('p2pAPI', {
+      start: () => ipcRenderer.invoke('p2p:start'),
+      status: () => ipcRenderer.invoke('p2p:status'),
+      pairingInfo: () => ipcRenderer.invoke('p2p:pairingInfo'),
+      connections: () => ipcRenderer.invoke('p2p:connections'),
+      request: (remoteKey: string, method: string, params?: unknown, timeoutMs?: number) =>
+        ipcRenderer.invoke('p2p:request', remoteKey, method, params, timeoutMs),
+      ping: (remoteKey: string) => ipcRenderer.invoke('p2p:ping', remoteKey),
+      stop: () => ipcRenderer.invoke('p2p:stop'),
+      onEvent: (cb: (event: unknown) => void): (() => void) => {
+        const listener = (_event: unknown, payload: unknown): void => cb(payload)
+        ipcRenderer.on('p2p:event', listener)
+        return () => ipcRenderer.removeListener('p2p:event', listener)
+      }
+    })
+
     contextBridge.exposeInMainWorld('modelsAPI', {
       list: () => ipcRenderer.invoke('models:list'),
       select: (id: string) => ipcRenderer.invoke('models:select', id),

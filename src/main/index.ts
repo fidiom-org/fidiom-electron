@@ -12,6 +12,7 @@ import { registerSettingsHandlers } from './settings-handlers'
 import { registerExportHandlers } from './export-handlers'
 import { registerDocumentHandlers } from './document-handlers'
 import { registerProjectHandlers } from './project-handlers'
+import { registerP2PHandlers } from './p2p-handlers'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -67,6 +68,7 @@ app.whenReady().then(() => {
   registerExportHandlers()
   registerDocumentHandlers()
   registerProjectHandlers()
+  registerP2PHandlers()
 
   createWindow()
 

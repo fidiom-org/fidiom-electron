@@ -4,13 +4,15 @@ import { useAuth } from '@renderer/features/auth/AuthContext'
 import { useProjectStoreHydration } from '@renderer/entities/project'
 import { Button } from '@renderer/components/ui/Button'
 import { cn } from '@renderer/lib/cn'
-import { ArrowLeftRight, ChartColumn, Database, FolderKanban, Settings } from 'lucide-react'
+import { ArrowLeftRight, ChartColumn, Database, FolderKanban, Settings, Wallet } from 'lucide-react'
 import logoImg from '../../../../../resources/icon.png'
+
 const nav = [
   { label: 'Dashboard', icon: <ChartColumn />, path: '/' },
   { label: 'Projects', icon: <FolderKanban />, path: '/projects' },
   { label: 'Transactions', icon: <ArrowLeftRight />, path: '/transactions' },
   { label: 'Models', icon: <Database />, path: '/chats' },
+  { label: 'Wallet', icon: <Wallet />, path: '/wallet' },
   { label: 'Settings', icon: <Settings />, path: '/settings' }
 ]
 

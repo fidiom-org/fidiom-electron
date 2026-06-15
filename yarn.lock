@@ -718,6 +718,26 @@
   dependencies:
     "@standard-schema/utils" "^0.3.0"
 
+"@hyperswarm/dht-relay@^0.4":
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/@hyperswarm/dht-relay/-/dht-relay-0.4.3.tgz#86f1469a1dba009f6d7e37ec9ed1ca3637b961af"
+  integrity sha512-bjiBnVOtm/vXF7RO6CGK6fQOMmhb4LMmgOlbPrNrEvf2CWzAfam6klXQ4DgKb1GY86KGiNCnSoB6TimNgaobbg==
+  dependencies:
+    "@hyperswarm/secret-stream" "^6.0.0"
+    b4a "^1.1.4"
+    compact-encoding "^2.6.1"
+    compact-encoding-net "^1.0.1"
+    events "^3.3.0"
+    graceful-goodbye "^1.2.1"
+    hyperdht "^6.6.0"
+    noise-handshake "^3.0.3"
+    protomux "^3.1.1"
+    safety-catch "^1.0.1"
+    sodium-universal "^4.0.0"
+    streamx "^2.11.3"
+    timeout-refresh "^2.0.1"
+    ws "^8.12.1"
+
 "@hyperswarm/secret-stream@^6.0.0", "@hyperswarm/secret-stream@^6.6.2":
   version "6.9.1"
   resolved "https://registry.yarnpkg.com/@hyperswarm/secret-stream/-/secret-stream-6.9.1.tgz#8cb2572777d667519652aceceaf462522275e238"
@@ -1834,6 +1854,13 @@
   resolved "https://registry.yarnpkg.com/@types/verror/-/verror-1.10.11.tgz#d3d6b418978c8aa202d41e5bb3483227b6ecc1bb"
   integrity sha512-RlDm9K7+o5stv0Co8i8ZRGxDbrTxhJtgjqjFyVh/tXQyl/rYtTKlnTvZ88oSTeYREWurwx20Js4kTuKCsFkUtg==
 
+"@types/ws@^8.18.1":
+  version "8.18.1"
+  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-8.18.1.tgz#48464e4bf2ddfd17db13d845467f6070ffea4aa9"
+  integrity sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/yauzl@^2.9.1":
   version "2.10.3"
   resolved "https://registry.yarnpkg.com/@types/yauzl/-/yauzl-2.10.3.tgz#e9b2808b4f109504a03cda958259876f61017999"
@@ -2040,7 +2067,7 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-b4a@^1.1.0, b4a@^1.1.1, b4a@^1.3.0, b4a@^1.3.1, b4a@^1.5.0, b4a@^1.5.3, b4a@^1.6.0, b4a@^1.6.1, b4a@^1.6.3, b4a@^1.6.4, b4a@^1.6.6, b4a@^1.6.7:
+b4a@^1.1.0, b4a@^1.1.1, b4a@^1.1.4, b4a@^1.3.0, b4a@^1.3.1, b4a@^1.5.0, b4a@^1.5.3, b4a@^1.6.0, b4a@^1.6.1, b4a@^1.6.3, b4a@^1.6.4, b4a@^1.6.6, b4a@^1.6.7:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/b4a/-/b4a-1.8.1.tgz#7f16334ca80127aeb26064a28841acbf174840a4"
   integrity sha512-aiqre1Nr0B/6DgE2N5vwTc+2/oQZ4Wh1t4NznYY4E00y8LCt6NqdRv81so00oo27D8MVKTpUa/MwUUtBLXCoDw==
@@ -2297,7 +2324,7 @@ bare-net@^2.0.1, bare-net@^2.2.0:
     bare-stream "^2.0.0"
     bare-tcp "^2.0.0"
 
-bare-node-worker-threads@^1.0.0, "worker_threads@npm:bare-node-worker-threads@^1.0.0":
+bare-node-worker-threads@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/bare-node-worker-threads/-/bare-node-worker-threads-1.0.0.tgz#ffbb6f9683d0f0c08e14bde271aa42e44a5c4404"
   integrity sha512-N3cLs8edH4x6UkZDq8NmZqX/WbNsWMgDuPLFmW8v711ail0+JwmX8D+zGUraVZgWnfBTTlnPYjD5sm+y4h9vtQ==
@@ -2337,7 +2364,7 @@ bare-pipe@^4.0.0, bare-pipe@^4.0.6, bare-pipe@^4.1.5, bare-pipe@^4.2.0:
     bare-events "^2.0.0"
     bare-stream "^2.0.0"
 
-bare-process@^4.2.1, bare-process@^4.2.2, "process@npm:bare-process@^4.2.2":
+bare-process@^4.0.0, bare-process@^4.2.1, bare-process@^4.2.2:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/bare-process/-/bare-process-4.4.1.tgz#f2757893a4295433abbeea96fbbe5f603079e654"
   integrity sha512-JfcTtymq6akqM2bdyTsP4A4GYJceBzb91k/ECmFps75uFf6uO33SM1bOZsRAqyRXExabsQJLn5S41NBl8HTM4A==
@@ -3024,12 +3051,19 @@ compact-encoding-bitfield@^1.0.0:
   dependencies:
     compact-encoding "^3.0.0"
 
-compact-encoding-net@^1.2.0:
+compact-encoding-net@^1.0.1, compact-encoding-net@^1.2.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/compact-encoding-net/-/compact-encoding-net-1.3.0.tgz#bcc8d5f349141b0cbd3c42e01892b40b946a434e"
   integrity sha512-HIYjL3aMiSENApR691aMLngXt6rkTHb9HUkEukcx3YwIZpoMUVXHXyjBzoo9kVwC7KakooBA1RRWb46Cu6qtAQ==
   dependencies:
     compact-encoding "^3.0.0"
+
+compact-encoding@^2.6.1:
+  version "2.19.2"
+  resolved "https://registry.yarnpkg.com/compact-encoding/-/compact-encoding-2.19.2.tgz#d502f1601c14b3ab78546187f6bf5ad5d2d521a3"
+  integrity sha512-/YjhHQE/5L4F7l5Bht69dRbP9RV6zoJPeowi8bMKQxNKe3Nh6hOY8pBGoVE9fz5GaWfEd8fWJ2aU9sB4KZuMYg==
+  dependencies:
+    b4a "^1.3.0"
 
 compact-encoding@^3.0.0, compact-encoding@^3.0.1, compact-encoding@^3.1.0:
   version "3.2.0"
@@ -3736,6 +3770,11 @@ events-universal@^1.0.0:
   dependencies:
     bare-events "^2.7.0"
 
+events@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
+  integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
+
 eventsource-parser@^3.0.0, eventsource-parser@^3.0.1:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/eventsource-parser/-/eventsource-parser-3.1.0.tgz#4e198eb91cd333d0a8ddcc036502b3618a25f449"
@@ -4129,6 +4168,14 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.4, graceful-fs@^4.2.6:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.11.tgz#4183e4e8bf08bb6e05bbb2f7d2e0c8f712ca40e3"
   integrity sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==
 
+graceful-goodbye@^1.2.1:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/graceful-goodbye/-/graceful-goodbye-1.3.3.tgz#5bf4e309d2c9fe5c545cc445f7699b838d8a20b3"
+  integrity sha512-ABj07mmHrK3FC8fJ3PP5QCrbA31zkB4Qg34NFmYgwJnBxzfbRmtMzOg54PL55OG5sFjvmBzD0q85JAtRlA3dSA==
+  dependencies:
+    bare-process "^4.0.0"
+    safety-catch "^1.0.2"
+
 has-flag@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
@@ -4388,7 +4435,7 @@ hyperdht-stats@^1.7.0:
   resolved "https://registry.yarnpkg.com/hyperdht-stats/-/hyperdht-stats-1.10.0.tgz#77689e30d99fbe9eb435dfa0fc2bdb0fee6d399e"
   integrity sha512-KiRmDxcmPp4pnQ4/KHn+II/sFqAy5e+xD4pX/jxwam01K46YABRep4wm1V5ItckrtC37wzmiHlsp1f9wBRXUxA==
 
-hyperdht@^6.21.0, hyperdht@^6.23.0:
+hyperdht@^6, hyperdht@^6.21.0, hyperdht@^6.23.0, hyperdht@^6.6.0:
   version "6.32.0"
   resolved "https://registry.yarnpkg.com/hyperdht/-/hyperdht-6.32.0.tgz#98b8b11019f8631105fe57e4de17b39c221f67b5"
   integrity sha512-Y/SibEN7wue0E8ydh8lx9IX7SOE9o00b6tufPA7hRxAafXsisWUBrW36fIHdyxg148T4Z3olrooOGZDZ89LYag==
@@ -5100,6 +5147,15 @@ noise-curve-ed@^2.0.0, noise-curve-ed@^2.0.1:
     nanoassert "^2.0.0"
     sodium-universal "^5.0.0"
 
+noise-handshake@^3.0.3:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/noise-handshake/-/noise-handshake-3.1.0.tgz#8be14b58f4a956c2a6ab41ff8691c6242a4f5b82"
+  integrity sha512-0S1qkUvMbTvZCfgr/vSkVT84YyvI4Q0OLwSc5BFxVmjaePrxAwVeXeJDY3A7N/7+qj95gZ15LaNoP9ZnBXH5Lw==
+  dependencies:
+    b4a "^1.1.0"
+    nanoassert "^2.0.0"
+    sodium-universal "^4.0.0"
+
 noise-handshake@^4.0.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/noise-handshake/-/noise-handshake-4.2.0.tgz#e1acf924bff735b3c5f8766e9ca4e2ca750e951a"
@@ -5376,6 +5432,19 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
   integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
 
+"process@npm:bare-process@^4.2.2":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/bare-process/-/bare-process-4.4.1.tgz#f2757893a4295433abbeea96fbbe5f603079e654"
+  integrity sha512-JfcTtymq6akqM2bdyTsP4A4GYJceBzb91k/ECmFps75uFf6uO33SM1bOZsRAqyRXExabsQJLn5S41NBl8HTM4A==
+  dependencies:
+    bare-abort "^2.0.13"
+    bare-env "^3.0.0"
+    bare-events "^2.3.1"
+    bare-hrtime "^2.0.0"
+    bare-os "^3.7.1"
+    bare-signals "^4.0.0"
+    bare-stdio "^1.0.1"
+
 progress@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
@@ -5412,7 +5481,7 @@ protocol-buffers-encodings@^1.2.0:
     signed-varint "^2.0.1"
     varint "5.0.0"
 
-protomux@^3.5.0, protomux@^3.5.1:
+protomux@^3.1.1, protomux@^3.5.0, protomux@^3.5.1:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/protomux/-/protomux-3.11.0.tgz#820e61270b11e941913457b539d44a8f44487904"
   integrity sha512-Ze43XaNHbL6zQ/zJwVYvue7Aj8pDB1HNnISsrFhAur3291Y+Iu2fMhOpySD73J/32BoBIUYrhl07lJsBR/fUVA==
@@ -6100,6 +6169,13 @@ smart-buffer@^4.0.2:
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.2.0.tgz#6e1d71fa4f18c05f7d0ff216dd16a481d0e8d9ae"
   integrity sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==
 
+sodium-native@^4.0.0:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/sodium-native/-/sodium-native-4.3.3.tgz#fae4866b52366f5e6cc1b7ae8c8a71673d50c7df"
+  integrity sha512-OnxSlN3uyY8D0EsLHpmm2HOFmKddQVvEMmsakCrXUzSd8kjjbzL413t4ZNF3n0UxSwNgwTyUvkmZHTfuCeiYSw==
+  dependencies:
+    require-addon "^1.1.0"
+
 sodium-native@^5.0.1, sodium-native@^5.0.9:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/sodium-native/-/sodium-native-5.1.0.tgz#5b11d779c9eb7cb76baf1f0fc98bb6f821ff24cf"
@@ -6116,6 +6192,13 @@ sodium-secretstream@^1.1.0:
   dependencies:
     b4a "^1.1.1"
     sodium-universal "^5.0.0"
+
+sodium-universal@^4.0.0:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/sodium-universal/-/sodium-universal-4.0.1.tgz#75146f3b6fb6ab0dcc9278ad468ef5f23a0351e4"
+  integrity sha512-sNp13PrxYLaUFHTGoDKkSDFvoEu51bfzE12RwGlqU1fcrkpAOK0NvizaJzOWV0Omtk9me2+Pnbjcf/l0efxuGQ==
+  dependencies:
+    sodium-native "^4.0.0"
 
 sodium-universal@^5.0.0, sodium-universal@^5.0.1:
   version "5.0.1"
@@ -6168,6 +6251,15 @@ statuses@^2.0.1, statuses@^2.0.2, statuses@~2.0.2:
   integrity sha512-fE3xRlcMyxqMi96k4FxvZdGJMndt4fsf9U1T7mU7ZV8h+r6DxNkm2qCdX1+Ie+5mCx6Hoh/jv+Lw/OKpta9H7w==
   dependencies:
     bare-stream "*"
+
+streamx@^2.11.3:
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/streamx/-/streamx-2.28.0.tgz#035ab56057b7ed2211b51d532e6973f0f99fbf11"
+  integrity sha512-1Yowhzjf0ivGMrTIkY9hav5TxobO9qIVqUE41fiCGMGgc3CLlf4MY+9AHmZqBWgDTue0fY9zWjYFVyf6Diuobw==
+  dependencies:
+    events-universal "^1.0.0"
+    fast-fifo "^1.3.2"
+    text-decoder "^1.1.0"
 
 streamx@^2.12.4, streamx@^2.12.5, streamx@^2.13.2, streamx@^2.14.0, streamx@^2.15.0, streamx@^2.15.1, streamx@^2.16.1, streamx@^2.20.0, streamx@^2.21.0, streamx@^2.21.1, streamx@^2.22.0, streamx@^2.22.1, streamx@^2.23.0, streamx@^2.25.0, streamx@^2.26.0:
   version "2.27.0"
@@ -6314,7 +6406,7 @@ time-ordered-set@^2.0.0:
   resolved "https://registry.yarnpkg.com/time-ordered-set/-/time-ordered-set-2.0.1.tgz#66327419aa983a6e8c8f9e1b6832f721462c95b7"
   integrity sha512-VJEKmgSN2UiOLB8BpN8Sh2b9LGMHTP5OPrQRpnKjvOheOyzk0mufbjzjKTIG2gO4A+Y+vDJ+0TcLbpUmMLsg8A==
 
-timeout-refresh@^2.0.0:
+timeout-refresh@^2.0.0, timeout-refresh@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/timeout-refresh/-/timeout-refresh-2.0.1.tgz#f8ec7cf1f9d93b2635b7d4388cb820c5f6c16f98"
   integrity sha512-SVqEcMZBsZF9mA78rjzCrYrUs37LMJk3ShZ851ygZYW1cMeIjs9mL57KO6Iv5mmjSQnOe/29/VAfGXo+oRCiVw==
@@ -6630,6 +6722,13 @@ which@^6.0.0:
   dependencies:
     isexe "^4.0.0"
 
+"worker_threads@npm:bare-node-worker-threads@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/bare-node-worker-threads/-/bare-node-worker-threads-1.0.0.tgz#ffbb6f9683d0f0c08e14bde271aa42e44a5c4404"
+  integrity sha512-N3cLs8edH4x6UkZDq8NmZqX/WbNsWMgDuPLFmW8v711ail0+JwmX8D+zGUraVZgWnfBTTlnPYjD5sm+y4h9vtQ==
+  dependencies:
+    bare-worker "*"
+
 wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
@@ -6643,6 +6742,11 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
+
+ws@^8, ws@^8.12.1:
+  version "8.21.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.21.0.tgz#012e413fc07429945121b0c153158c4343086951"
+  integrity sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==
 
 xache@^1.1.0, xache@^1.2.1:
   version "1.2.1"
