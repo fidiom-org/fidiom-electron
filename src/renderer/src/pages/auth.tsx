@@ -1,49 +1,49 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '@renderer/features/auth/AuthContext'
-import { Button } from '@renderer/components/ui/Button'
-import { Input } from '@renderer/components/ui/Input'
-import { ModelStatus } from '@renderer/components/ui/ModelStatus'
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@renderer/features/auth/AuthContext";
+import { Button } from "@renderer/components/ui/Button";
+import { Input } from "@renderer/components/ui/Input";
+import { ModelStatus } from "@renderer/components/ui/ModelStatus";
 
 export const AuthPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { initialized, setup, unlock } = useAuth()
+  const { initialized, setup, unlock } = useAuth();
 
-  const [masterKey, setMasterKey] = useState('')
-  const [confirm, setConfirm] = useState('')
-  const [error, setError] = useState('')
+  const [masterKey, setMasterKey] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
 
-  const [submitting, setSubmitting] = useState(false)
+  const [submitting, setSubmitting] = useState(false);
 
-  const creating = !initialized
+  const creating = !initialized;
 
   const handleSubmit = async (event): Promise<void> => {
-    event.preventDefault()
-    setError('')
-    if (!masterKey || submitting) return
+    event.preventDefault();
+    setError("");
+    if (!masterKey || submitting) return;
 
     if (creating && masterKey !== confirm) {
-      setError('Master keys do not match')
-      return
+      setError("Master keys do not match");
+      return;
     }
 
-    setSubmitting(true)
+    setSubmitting(true);
     try {
       if (creating) {
-        await setup(masterKey)
-        navigate('/', { replace: true })
+        await setup(masterKey);
+        navigate("/projects", { replace: true });
       } else {
-        const ok = await unlock(masterKey)
-        if (ok) navigate('/', { replace: true })
-        else setError('Incorrect master key')
+        const ok = await unlock(masterKey);
+        if (ok) navigate("/projects", { replace: true });
+        else setError("Incorrect master key");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
-      setSubmitting(false)
+      setSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="relative grid h-screen place-items-center overflow-hidden bg-zinc-950 text-zinc-100">
@@ -56,12 +56,12 @@ export const AuthPage = () => {
             F
           </div>
           <h1 className="text-xl font-semibold">
-            {creating ? 'Create your master key' : 'Unlock Fibiom'}
+            {creating ? "Create your master key" : "Unlock Fibiom"}
           </h1>
           <p className="mt-1 text-sm text-zinc-500">
             {creating
-              ? 'This key encrypts your local data'
-              : 'Enter your master key to decrypt your data'}
+              ? "This key encrypts your local data"
+              : "Enter your master key to decrypt your data"}
           </p>
         </div>
 
@@ -86,8 +86,8 @@ export const AuthPage = () => {
 
           {creating && (
             <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-xs text-amber-300">
-              ⚠ Save this key somewhere safe. It is the only way to open your data — it is never
-              stored and cannot be recovered or reset.
+              ⚠ Save this key somewhere safe. It is the only way to open your
+              data — it is never stored and cannot be recovered or reset.
             </p>
           )}
 
@@ -96,11 +96,11 @@ export const AuthPage = () => {
           <Button type="submit" className="w-full" disabled={submitting}>
             {submitting
               ? creating
-                ? 'Creating…'
-                : 'Unlocking…'
+                ? "Creating…"
+                : "Unlocking…"
               : creating
-                ? 'Create master key'
-                : 'Unlock'}
+                ? "Create master key"
+                : "Unlock"}
           </Button>
         </form>
 
@@ -108,13 +108,16 @@ export const AuthPage = () => {
 
         {!creating && (
           <p className="mt-6 text-center text-xs text-zinc-600">
-            Lost your master key?{' '}
-            <Link to="/reset" className="text-zinc-400 underline hover:text-zinc-200">
+            Lost your master key?{" "}
+            <Link
+              to="/reset"
+              className="text-zinc-400 underline hover:text-zinc-200"
+            >
               Reset
             </Link>
           </p>
         )}
       </div>
     </div>
-  )
-}
+  );
+};

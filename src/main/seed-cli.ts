@@ -1,23 +1,18 @@
-import { createInterface } from 'readline'
 import { existsSync } from 'fs'
 import { devDbFilePath, devDbMetaFilePath } from './db-path'
 import { openDatabaseFile } from './db-open'
 import { seedDemoDataWithConnection } from './seed-demo'
+import passwordPrompt from 'password-prompt'
 
-const readMasterKey = (): Promise<string> => {
+const readMasterKey = async (): Promise<string> => {
   const fromEnv = process.env.MASTER_KEY?.trim()
-  if (fromEnv) return Promise.resolve(fromEnv)
+  if (fromEnv) return fromEnv
 
   const fromArg = process.argv.find((arg) => arg.startsWith('--master-key='))?.split('=')[1]
-  if (fromArg) return Promise.resolve(fromArg)
 
-  const rl = createInterface({ input: process.stdin, output: process.stderr })
-  return new Promise((resolve) => {
-    rl.question('Master key: ', (answer) => {
-      rl.close()
-      resolve(answer)
-    })
-  })
+  if (fromArg) return fromArg
+
+  return await passwordPrompt('Master key: ', { method: 'hide' })
 }
 
 export const runSeed = async (masterKey: string): Promise<void> => {
