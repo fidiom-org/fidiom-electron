@@ -38,14 +38,14 @@ export const useCreateProject = (onCreated: (projectId: string) => void) => {
     }
   }, [form])
 
-  const submit = form.handleSubmit((values) => {
+  const submit = form.handleSubmit(async (values) => {
     const input: CreateProjectInput = {
       name: values.name,
       currency: values.currency as ProjectCurrency,
       initialCash: values.initialCash === '' ? undefined : Number(values.initialCash),
       description: values.description?.trim() || undefined
     }
-    const project = createProject(input)
+    const project = await createProject(input)
     onCreated(project.id)
   })
 

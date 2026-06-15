@@ -52,8 +52,10 @@ export const ProjectPlanPage = () => {
           submitLabel="Save plan"
           onCancel={() => setEditOpen(false)}
           onSubmit={(inputs) => {
-            saveProjectPlanTargets(projectId, period, inputs)
-            setEditOpen(false)
+            void (async () => {
+              await saveProjectPlanTargets(projectId, period, inputs)
+              setEditOpen(false)
+            })()
           }}
         />
       </Modal>

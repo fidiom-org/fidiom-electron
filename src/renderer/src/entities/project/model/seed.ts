@@ -6,6 +6,7 @@ export const SEED_PROJECTS: Project[] = [
   {
     id: 'proj-acme',
     name: 'Acme Labs',
+    type: 'business',
     currency: 'USD',
     initialCash: 42_000,
     description: 'Infrastructure-heavy startup',
@@ -14,6 +15,7 @@ export const SEED_PROJECTS: Project[] = [
   {
     id: 'proj-streampay',
     name: 'StreamPay',
+    type: 'business',
     currency: 'USD',
     initialCash: 85_000,
     description: 'Subscription business with mixed revenue',

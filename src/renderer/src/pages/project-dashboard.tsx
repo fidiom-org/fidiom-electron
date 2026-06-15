@@ -120,15 +120,17 @@ export const ProjectDashboardPage = () => {
             submitLabel={paymentModal.mode === 'edit' ? 'Save changes' : 'Add payment'}
             onCancel={() => setPaymentModal(null)}
             onSubmit={(values) => {
-              if (paymentModal.mode === 'edit') {
-                updatePayment(paymentModal.payment.id, {
-                  ...values,
-                  reason: values.reason ?? ''
-                })
-              } else {
-                addPayment(projectId, values)
-              }
-              setPaymentModal(null)
+              void (async () => {
+                if (paymentModal.mode === 'edit') {
+                  await updatePayment(paymentModal.payment.id, {
+                    ...values,
+                    reason: values.reason ?? ''
+                  })
+                } else {
+                  await addPayment(projectId, values)
+                }
+                setPaymentModal(null)
+              })()
             }}
           />
         )}
@@ -146,16 +148,18 @@ export const ProjectDashboardPage = () => {
             submitLabel={employeeModal.mode === 'edit' ? 'Save changes' : 'Add employee'}
             onCancel={() => setEmployeeModal(null)}
             onSubmit={(values) => {
-              if (employeeModal.mode === 'edit') {
-                updateEmployee(employeeModal.employee.id, {
-                  name: values.name,
-                  salary: values.salary,
-                  reason: values.reason ?? ''
-                })
-              } else {
-                addEmployee(projectId, { name: values.name, salary: values.salary })
-              }
-              setEmployeeModal(null)
+              void (async () => {
+                if (employeeModal.mode === 'edit') {
+                  await updateEmployee(employeeModal.employee.id, {
+                    name: values.name,
+                    salary: values.salary,
+                    reason: values.reason ?? ''
+                  })
+                } else {
+                  await addEmployee(projectId, { name: values.name, salary: values.salary })
+                }
+                setEmployeeModal(null)
+              })()
             }}
           />
         )}
@@ -173,7 +177,7 @@ export const ProjectDashboardPage = () => {
         onClose={() => setDeletePaymentTarget(null)}
         onConfirm={(reason) => {
           if (deletePaymentTarget) {
-            deletePayment(deletePaymentTarget.id, { reason })
+            void deletePayment(deletePaymentTarget.id, { reason })
           }
           setDeletePaymentTarget(null)
         }}
@@ -185,7 +189,7 @@ export const ProjectDashboardPage = () => {
         onClose={() => setDeleteEmployeeTarget(null)}
         onConfirm={(reason) => {
           if (deleteEmployeeTarget) {
-            deleteEmployee(deleteEmployeeTarget.id, { reason })
+            void deleteEmployee(deleteEmployeeTarget.id, { reason })
           }
           setDeleteEmployeeTarget(null)
         }}

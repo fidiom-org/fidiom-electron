@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { NavLink, useMatches } from 'react-router-dom'
 import { useAuth } from '@renderer/features/auth/AuthContext'
+import { useProjectStoreHydration } from '@renderer/entities/project'
 import { Button } from '@renderer/components/ui/Button'
 import { ChartColumn, Database, FolderKanban, Settings } from 'lucide-react'
 import { cn } from '@renderer/lib/cn'
@@ -24,6 +25,7 @@ interface AppShellProps {
 
 export const AppShell = ({ children }: AppShellProps) => {
   const { lock } = useAuth()
+  const projectsReady = useProjectStoreHydration()
   const matches = useMatches()
   const title =
     [...matches]
@@ -89,7 +91,13 @@ export const AppShell = ({ children }: AppShellProps) => {
             Connected
           </span>
         </header>
-        <main className="flex-1 overflow-y-auto p-8">{children}</main>
+        <main className="flex-1 overflow-y-auto p-8">
+          {!projectsReady ? (
+            <p className="text-sm text-zinc-500">Loading workspace…</p>
+          ) : (
+            children
+          )}
+        </main>
       </div>
     </div>
   )

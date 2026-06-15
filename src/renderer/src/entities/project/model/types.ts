@@ -46,6 +46,7 @@ export interface Payment {
 export interface Project {
   id: string
   name: string
+  type: 'personal' | 'business'
   currency: ProjectCurrency
   initialCash: number
   description: string | null
@@ -97,6 +98,7 @@ export interface CreateProjectInput {
   currency: ProjectCurrency
   initialCash?: number
   description?: string
+  type?: 'personal' | 'business'
 }
 
 export interface PaymentInput {

@@ -35,9 +35,11 @@ export const InvoiceImportModal = ({
           submitLabel="Create payment"
           onCancel={onClose}
           onSubmit={(values) => {
-            addPayment(projectId, values)
-            onCreated?.()
-            onClose()
+            void (async () => {
+              await addPayment(projectId, values)
+              onCreated?.()
+              onClose()
+            })()
           }}
         />
       ) : (
