@@ -20,7 +20,7 @@
     "build": "yarn typecheck",
     "artifacts": "bash scripts/collect-artifacts.sh",
     "artifacts:info": "bash scripts/collect-artifacts.sh --info",
-    "seed": "tsx scripts/seed-demo-data.ts",
+    "seed": "bash scripts/seed.sh",
     "postinstall": "electron-rebuild -f -w better-sqlite3-multiple-ciphers,argon2"
   },
   "dependencies": {

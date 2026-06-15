@@ -6,7 +6,6 @@ import {
   DEMO_PROJECTS,
   type DemoProjectKey
 } from './demo-seed'
-import * as secureStore from './secure-store'
 
 export interface SeedDemoResult {
   inserted: boolean
@@ -120,15 +119,6 @@ const seedWithConnection = (conn: Database.Database): SeedDemoResult => {
     inserted: true,
     message: `Inserted ${DEMO_PROJECTS.length} projects with payments, employees, and plan targets`
   }
-}
-
-/** Seed via the live app connection (DB must already be unlocked). */
-export const seedDemoData = (): SeedDemoResult => {
-  const status = secureStore.status()
-  if (!status.unlocked) {
-    throw new Error('Database is locked — unlock the app first or use the CLI seed script')
-  }
-  return secureStore.transaction(() => seedWithConnection(secureStore.connection()))
 }
 
 export const seedDemoDataWithConnection = (conn: Database.Database): SeedDemoResult =>
