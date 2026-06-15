@@ -22,7 +22,7 @@ export const CopyField = ({ label, value, mono = true }: CopyFieldProps): React.
           variant="outline"
           className="px-3 py-1.5 text-xs"
           onClick={() => {
-            void navigator.clipboard.writeText(value)
+            window.clipboardAPI.writeText(value)
             setCopied(true)
             setTimeout(() => setCopied(false), 1200)
           }}

@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { clipboard, contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 // Custom APIs for renderer
@@ -11,6 +11,10 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+
+    contextBridge.exposeInMainWorld('clipboardAPI', {
+      writeText: (text: string): void => clipboard.writeText(text)
+    })
 
     contextBridge.exposeInMainWorld('authAPI', {
       status: (): Promise<{ initialized: boolean; unlocked: boolean }> =>

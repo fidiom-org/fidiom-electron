@@ -302,10 +302,15 @@ interface ProjectsAPI {
   ) => Promise<PlanTargetEntity[]>
 }
 
+interface ClipboardAPI {
+  writeText: (text: string) => void
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI
     api: unknown
+    clipboardAPI: ClipboardAPI
     authAPI: AuthAPI
     dbAPI: DbAPI
     visionAPI: VisionAPI
