@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { CATEGORY_PILL, type CategoryOption } from '@renderer/entities/transaction'
+import { CategoryPill, type CategoryOption } from '@renderer/entities/transaction'
 import { useCategories } from '@renderer/features/settings'
 import { useClickOutside } from '@renderer/shared/lib/use-click-outside'
 import { cn } from '@renderer/lib/cn'
@@ -17,30 +17,9 @@ interface CategoryDropdownProps {
   onSelect: (value: string) => void
 }
 
-const CategoryPill = ({ option }: { option: CategoryOption }) => {
-  return (
-    <span
-      className={cn(
-        'inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium',
-        CATEGORY_PILL[option.color]
-      )}
-    >
-      <span aria-hidden>{option.icon}</span>
-      {option.label}
-    </span>
-  )
-}
-
-const CategoryDropdown = ({
-  search,
-  onSearchChange,
-  options,
-  value,
-  onSelect
-}: CategoryDropdownProps) => {
+const CategoryDropdown = ({ search, onSearchChange, options, value, onSelect }: CategoryDropdownProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
-  // Focus the search box when the dropdown mounts (i.e. when it opens).
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
@@ -74,7 +53,7 @@ const CategoryDropdown = ({
                 option.value === value && 'bg-zinc-800'
               )}
             >
-              <CategoryPill option={option} />
+              <CategoryPill category={option} />
             </button>
           ))
         )}
@@ -114,7 +93,7 @@ export const CategorySelect = ({ value, onChange }: CategorySelectProps) => {
         className="flex w-full items-center justify-between rounded-xl bg-zinc-800 px-4 py-3 text-sm text-zinc-100 outline-none focus:ring-2 focus:ring-indigo-500/50"
       >
         {selected ? (
-          <CategoryPill option={selected} />
+          <CategoryPill category={selected} />
         ) : (
           <span className="text-zinc-500">Select a category</span>
         )}

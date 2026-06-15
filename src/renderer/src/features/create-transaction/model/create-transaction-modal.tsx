@@ -1,10 +1,15 @@
 import { createContext, useContext, useState, type ReactNode } from 'react'
+import { type TransactionListItem } from '@renderer/entities/transaction'
 import { Modal } from '@renderer/shared/ui'
 import { CreateTransactionForm } from '@renderer/features/create-transaction/ui/CreateTransactionForm'
+import { EditTransactionForm } from '@renderer/features/create-transaction/ui/EditTransactionForm'
 
 interface CreateTransactionModalValue {
   open: () => void
+  openEdit: (transaction: TransactionListItem) => void
 }
+
+type ModalState = { mode: 'create' } | { mode: 'edit'; transaction: TransactionListItem } | null
 
 const CreateTransactionModalContext = createContext<CreateTransactionModalValue | null>(null)
 
@@ -17,17 +22,26 @@ export const useCreateTransactionModal = (): CreateTransactionModalValue => {
 }
 
 export const CreateTransactionModalProvider = ({ children }: { children: ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [state, setState] = useState<ModalState>(null)
 
-  const open = (): void => setIsOpen(true)
-  const close = (): void => setIsOpen(false)
-  const handleCreated = (): void => close()
+  const open = (): void => setState({ mode: 'create' })
+  const openEdit = (transaction: TransactionListItem): void =>
+    setState({ mode: 'edit', transaction })
+  const close = (): void => setState(null)
 
   return (
-    <CreateTransactionModalContext.Provider value={{ open }}>
+    <CreateTransactionModalContext.Provider value={{ open, openEdit }}>
       {children}
-      <Modal open={isOpen} onClose={close} title="New transaction">
-        <CreateTransactionForm onCreated={handleCreated} />
+      <Modal
+        open={state !== null}
+        onClose={close}
+        title={state?.mode === 'edit' ? 'Edit transaction' : 'New transaction'}
+      >
+        {state?.mode === 'edit' ? (
+          <EditTransactionForm transaction={state.transaction} onSaved={close} />
+        ) : (
+          <CreateTransactionForm onCreated={close} />
+        )}
       </Modal>
     </CreateTransactionModalContext.Provider>
   )

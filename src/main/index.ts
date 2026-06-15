@@ -9,6 +9,7 @@ import { registerChatHandlers } from './chat-handlers'
 import { registerLlmHandlers } from './llm'
 import { registerModelHandlers } from './model-handlers'
 import { registerSettingsHandlers } from './settings-handlers'
+import { registerExportHandlers } from './export-handlers'
 import { registerDocumentHandlers } from './document-handlers'
 import { registerProjectHandlers } from './project-handlers'
 
@@ -63,6 +64,7 @@ app.whenReady().then(() => {
   registerLlmHandlers()
   registerModelHandlers()
   registerSettingsHandlers()
+  registerExportHandlers()
   registerDocumentHandlers()
   registerProjectHandlers()
 

@@ -113,6 +113,10 @@ interface ModelsAPI {
   onProgress: (cb: (percentage: number | null) => void) => () => void
 }
 
+interface ExportAPI {
+  saveCsv: (defaultName: string, contents: string) => Promise<{ saved: boolean; filePath?: string }>
+}
+
 interface SpeechAPI {
   transcribe: (pcm: Uint8Array) => Promise<string>
   speak: (text: string) => Promise<Uint8Array>
@@ -238,10 +242,7 @@ interface ProjectsAPI {
       reason: string
     }
   ) => Promise<PaymentEntity | null>
-  deletePayment: (
-    paymentId: string,
-    input: { reason: string }
-  ) => Promise<PaymentEntity | null>
+  deletePayment: (paymentId: string, input: { reason: string }) => Promise<PaymentEntity | null>
   addEmployee: (
     projectId: string,
     input: { name: string; salary: number }
@@ -250,10 +251,7 @@ interface ProjectsAPI {
     employeeId: string,
     input: { name: string; salary: number; reason: string }
   ) => Promise<EmployeeEntity | null>
-  deleteEmployee: (
-    employeeId: string,
-    input: { reason: string }
-  ) => Promise<EmployeeEntity | null>
+  deleteEmployee: (employeeId: string, input: { reason: string }) => Promise<EmployeeEntity | null>
   savePlanTargets: (
     projectId: string,
     period: PlanPeriodEntity,
@@ -277,6 +275,7 @@ declare global {
     chatAPI: ChatAPI
     settingsAPI: SettingsAPI
     modelsAPI: ModelsAPI
+    exportAPI: ExportAPI
     documentsAPI: DocumentsAPI
     projectsAPI: ProjectsAPI
   }

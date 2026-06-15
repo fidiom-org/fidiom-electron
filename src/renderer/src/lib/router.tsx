@@ -8,6 +8,7 @@ import { MainPage } from '@renderer/pages/main'
 import { ProjectDashboardPage } from '@renderer/pages/project-dashboard'
 import { ProjectPlanPage } from '@renderer/pages/project-plan'
 import { ProjectsPage } from '@renderer/pages/projects'
+import { TransactionsPage } from '@renderer/pages/transactions'  
 import { SettingsPage } from '@renderer/pages/settings'
 
 export const router = createHashRouter([
@@ -21,6 +22,11 @@ export const router = createHashRouter([
         children: [
           { path: '/', element: <MainPage />, handle: { title: 'Dashboard' } },
           { path: '/projects', element: <ProjectsPage />, handle: { title: 'Projects' } },
+          {
+            path: '/transactions',
+            element: <TransactionsPage />,
+            handle: { title: 'Transactions' }
+          },
           {
             path: '/projects/:projectId',
             element: <ProjectDashboardPage />,

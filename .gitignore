@@ -13,3 +13,4 @@ db/auth.json
 # electron-vite writes a transpiled temp config next to the .ts one; it is
 # normally auto-deleted but can be left behind after a crash.
 electron.vite.config.*.mjs
+    
