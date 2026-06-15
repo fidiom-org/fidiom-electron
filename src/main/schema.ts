@@ -223,6 +223,68 @@ const V5 = `
   CREATE INDEX IF NOT EXISTS idx_documents_project ON documents(project_id);
 `
 
+const V6 = `
+  ALTER TABLE projects ADD COLUMN initial_cash REAL NOT NULL DEFAULT 0;
+
+  CREATE TABLE IF NOT EXISTS finance_payments (
+    id          TEXT PRIMARY KEY,
+    project_id  INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    direction   TEXT NOT NULL CHECK (direction IN ('expense', 'income')),
+    vendor      TEXT NOT NULL,
+    amount      REAL NOT NULL,
+    type        TEXT NOT NULL CHECK (type IN ('recurring', 'one-time')),
+    category    TEXT NOT NULL,
+    date        TEXT,
+    billing_day INTEGER,
+    note        TEXT,
+    deleted_at  TEXT,
+    created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_finance_payments_project ON finance_payments(project_id);
+
+  CREATE TABLE IF NOT EXISTS finance_payment_history (
+    id         TEXT PRIMARY KEY,
+    payment_id TEXT NOT NULL REFERENCES finance_payments(id) ON DELETE CASCADE,
+    timestamp  TEXT NOT NULL,
+    summary    TEXT NOT NULL,
+    reason     TEXT NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_finance_payment_history_payment ON finance_payment_history(payment_id);
+
+  CREATE TABLE IF NOT EXISTS finance_employees (
+    id         TEXT PRIMARY KEY,
+    project_id INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    name       TEXT NOT NULL,
+    salary     REAL NOT NULL,
+    deleted_at TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_finance_employees_project ON finance_employees(project_id);
+
+  CREATE TABLE IF NOT EXISTS finance_employee_history (
+    id          TEXT PRIMARY KEY,
+    employee_id TEXT NOT NULL REFERENCES finance_employees(id) ON DELETE CASCADE,
+    timestamp   TEXT NOT NULL,
+    summary     TEXT NOT NULL,
+    reason      TEXT NOT NULL
+  );
+  CREATE INDEX IF NOT EXISTS idx_finance_employee_history_employee ON finance_employee_history(employee_id);
+
+  CREATE TABLE IF NOT EXISTS plan_targets (
+    id                 TEXT PRIMARY KEY,
+    project_id         INTEGER NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    metric             TEXT NOT NULL,
+    target_value       REAL NOT NULL,
+    operator           TEXT NOT NULL CHECK (operator IN ('gte', 'lte', 'eq')),
+    period_granularity TEXT NOT NULL CHECK (period_granularity IN ('month', 'quarter')),
+    period_month       INTEGER NOT NULL,
+    period_year        INTEGER NOT NULL,
+    created_at         TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at         TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_plan_targets_project ON plan_targets(project_id);
+`
+
 const migrations: ((db: Database.Database) => void)[] = [
   (db) => db.exec(V1),
   (db) => {
@@ -231,7 +293,8 @@ const migrations: ((db: Database.Database) => void)[] = [
   },
   (db) => db.exec(V3),
   (db) => db.exec(V4),
-  (db) => db.exec(V5)
+  (db) => db.exec(V5),
+  (db) => db.exec(V6)
 ]
 
 export const runMigrations = (db: Database.Database): void => {
