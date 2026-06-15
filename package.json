@@ -18,7 +18,7 @@
     "dev": "electron-vite dev -- --no-sandbox",
     "artifacts": "bash scripts/collect-artifacts.sh",
     "artifacts:info": "bash scripts/collect-artifacts.sh --info",
-    "seed": "tsx scripts/seed-demo-data.ts",
+    "seed": "bash scripts/seed.sh",
     "build": "yarn typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "yarn build && electron-builder --dir",
