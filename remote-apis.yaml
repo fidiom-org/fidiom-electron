@@ -1,5 +1,5 @@
 reschema_version: 1
-application: fidiom-electron
+application: fibiom-electron
 summary: >-
   Local-first desktop finance app. No remote AI inference. Remote calls are:
   one-time on-device model-weight downloads performed by the QVAC SDK;

@@ -1,6 +1,6 @@
-# Fidiom — on-device AI CFO
+# Fibiom — on-device AI CFO
 
-Fidiom is a **local-first personal & business finance app** with an on-device AI
+Fibiom is a **local-first personal & business finance app** with an on-device AI
 CFO assistant. All AI runs on your machine through the **Tether QVAC SDK**
 (`@qvac/sdk`) — there is no remote inference and your financial data never leaves
 the device. The database is an encrypted SQLite store (SQLCipher) unlocked with a
@@ -134,7 +134,7 @@ Selectable in **Settings → Models** (`model-registry.ts`):
 
 ## Wallet connection (P2P)
 
-Fidiom can pair with a **[WDK](https://docs.wdk.tether.io/) wallet browser
+Fibiom can pair with a **[WDK](https://docs.wdk.tether.io/) wallet browser
 extension** over an **encrypted peer‑to‑peer channel** so the app can read your
 addresses/balances and request signatures — **without custodying any keys**. The
 app holds no seed and no funds; every signature is approved inside the wallet.
@@ -149,7 +149,7 @@ so can't be a native Hyperswarm peer. We bridge it with Holepunch's
 [`@hyperswarm/dht-relay`](https://github.com/holepunchto/dht-relay):
 
 ```
-WDK extension (service worker)          Fidiom (Electron main, full Node)
+WDK extension (service worker)          Fibiom (Electron main, full Node)
   dht-relay light client                  hyperdht node + key-addressed server
         │  browser WebSocket  ─────────▶   @hyperswarm/dht-relay WS relay (127.0.0.1)
         └────────── end-to-end Noise secret-stream ──────────┘
@@ -179,7 +179,7 @@ renderer feature `src/renderer/src/features/wallet/`, page `/wallet`.
    approval in the wallet.
 
 > The WDK wallet extension is a **separate** companion project (its own repo).
-> Fidiom only needs that extension installed and unlocked to pair.
+> Fibiom only needs that extension installed and unlocked to pair.
 
 ---
 

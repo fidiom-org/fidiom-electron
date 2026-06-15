@@ -1,7 +1,7 @@
 import { useLocalStorage } from '@renderer/hooks/use-local-storage'
 import type { FinanceMode } from '@renderer/entities/dashboard/model/types'
 
-const STORAGE_KEY = 'fidiom:finance-mode'
+const STORAGE_KEY = 'fibiom:finance-mode'
 
 export function useFinanceMode(): {
   mode: FinanceMode

@@ -28,7 +28,7 @@ export const ConnectionCard = ({
   const [latency, setLatency] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState<string | null>(null)
-  const [message, setMessage] = useState('Hello from Fidiom')
+  const [message, setMessage] = useState('Hello from Fibiom')
   const [signature, setSignature] = useState<string | null>(null)
 
   const measureLatency = async (): Promise<void> => {

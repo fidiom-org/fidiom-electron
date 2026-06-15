@@ -7,7 +7,7 @@ const POINTS = [
 ]
 
 export const AboutSettings = () => (
-  <SettingsSection title="Privacy & storage" description="How Fidiom handles your data.">
+  <SettingsSection title="Privacy & storage" description="How Fibiom handles your data.">
     <ul className="space-y-2 text-sm text-zinc-400">
       {POINTS.map((point) => (
         <li key={point} className="flex gap-2">

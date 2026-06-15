@@ -36,7 +36,7 @@ export const useChat = (): ChatContextValue => {
   return ctx
 }
 
-const LAST_CHAT_KEY = 'fidiom:lastActiveChatId'
+const LAST_CHAT_KEY = 'fibiom:lastActiveChatId'
 
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const { unlocked } = useAuth()

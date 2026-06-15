@@ -32,14 +32,14 @@ export const AppShell = ({ children }: AppShellProps) => {
     [...matches]
       .reverse()
       .map((match) => (match.handle as RouteHandle | undefined)?.title)
-      .find(Boolean) ?? 'Fidiom'
+      .find(Boolean) ?? 'Fibiom'
 
   return (
     <div className="flex h-screen bg-zinc-950 text-zinc-100">
       <aside className="flex w-60 flex-col border-r border-zinc-800 bg-zinc-900/40 p-4">
         <div className="mb-8 flex items-center gap-2 px-2">
-          <img src={logoImg} alt="Fidiom" className="h-8 w-8 rounded-xl" />
-          <span className="font-semibold">Fidiom</span>
+          <img src={logoImg} alt="Fibiom" className="h-8 w-8 rounded-xl" />
+          <span className="font-semibold">Fibiom</span>
         </div>
         <nav className="space-y-1">
           {nav.map((item) =>

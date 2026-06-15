@@ -7,7 +7,7 @@ import { createFinancialTools } from './financial-tools'
 import { unloadEmbeddingModel } from './embeddings'
 import { ensureModel, readStatus, unloadSharedModel } from './model'
 
-const SYSTEM_PROMPT = `You are Fidiom, an on-device AI CFO assistant.
+const SYSTEM_PROMPT = `You are Fibiom, an on-device AI CFO assistant.
 Answer the user's questions about their personal or business finances.
 A snapshot of the financial data is provided below for grounding. When a question
 needs an exact figure, a specific transaction, or a semantic lookup, CALL THE TOOLS
@@ -83,6 +83,9 @@ export function registerLlmHandlers(): void {
       const text = final.contentText ?? ''
 
       if (final.toolCalls.length === 0) {
+        if (final.stopReason === 'length') {
+          console.warn('[llm] response truncated (stopReason: length)')
+        }
         answer = cleanText(text)
         break
       }

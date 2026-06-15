@@ -1,7 +1,6 @@
 import { app, shell, BrowserWindow, ipcMain, session } from 'electron'
 import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import icon from '../../resources/icon.png?asset'
+import { electronApp, optimizer } from '@electron-toolkit/utils'
 import * as secureStore from './secure-store'
 import { registerVisionHandlers } from './vision'
 import { registerSpeechHandlers } from './speech'
@@ -14,15 +13,21 @@ import { registerDocumentHandlers } from './document-handlers'
 import { registerProjectHandlers } from './project-handlers'
 import { registerP2PHandlers } from './p2p-handlers'
 
+// resources/ ships via packagerConfig.extraResource (packaged) and sits at the
+// app root in dev. macOS ignores the BrowserWindow icon (uses the bundle icon).
+const iconPath = app.isPackaged
+  ? join(process.resourcesPath, 'resources', 'icon.png')
+  : join(app.getAppPath(), 'resources', 'icon.png')
+
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
     width: 1024,
     height: 720,
-    icon,
+    icon: iconPath,
     show: false,
     autoHideMenuBar: true,
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, 'preload.js'),
       sandbox: false,
       autoplayPolicy: 'no-user-gesture-required'
     }
@@ -37,10 +42,10 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
-  if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL)
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`))
   }
 }
 

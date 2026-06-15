@@ -22,6 +22,7 @@ interface DbAPI {
 interface VisionParseResult {
   text: string
   stats?: unknown
+  stopReason?: 'cancelled' | 'eos' | 'length' | 'stopSequence'
 }
 
 interface VisionModelStatus {

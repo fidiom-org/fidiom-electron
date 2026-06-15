@@ -47,9 +47,17 @@ export function registerVisionHandlers(): void {
       }
       event.sender.send('vision:stream', '')
 
-      const text = await run.text
-      const stats = await run.stats
-      return { text, stats }
+      const final = await run.final
+      if (final.stopReason === 'length') {
+        console.warn(
+          '[vision] receipt parse truncated (stopReason: length); JSON may be incomplete'
+        )
+      }
+      return {
+        text: final.contentText,
+        stats: final.stats,
+        stopReason: final.stopReason
+      }
     } finally {
       await unlink(tmpPath).catch(() => {})
     }

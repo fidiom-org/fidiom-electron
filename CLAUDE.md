@@ -11,11 +11,12 @@ An Electron + React 19 + TypeScript desktop app — a local-first AI CFO finance
 Package manager is **Yarn 1** (`yarn@1.22.22`). The README says `pnpm` — ignore it, use `yarn`.
 
 ```bash
-yarn install            # postinstall runs electron-builder install-app-deps
-yarn dev                # run app with HMR (passes --no-sandbox)
-yarn start              # preview a production build (electron-vite preview)
-yarn build              # typecheck + electron-vite build
-yarn build:mac          # package for macOS (also :win, :linux, :unpack)
+yarn install            # postinstall runs electron-rebuild (argon2 + sqlcipher) against Electron's ABI
+yarn start              # electron-forge start — dev with HMR (passes --no-sandbox); yarn dev is an alias
+yarn package            # electron-forge package — build the unpacked .app into out/ (no installers)
+yarn make               # electron-forge make — build installers for the current platform
+                        #   (add --platform=win32|linux; macOS universal is unsupported by the QVAC plugin)
+yarn build              # typecheck only (Forge does the actual build via package/make)
 
 yarn lint               # oxlint
 yarn lint:fix           # oxlint --fix
@@ -24,6 +25,14 @@ yarn typecheck          # runs both node + web projects
 yarn typecheck:node     # main + preload (tsconfig.node.json)
 yarn typecheck:web      # renderer (tsconfig.web.json)
 ```
+
+Build toolchain is **Electron Forge** (`forge.config.js`) with `@electron-forge/plugin-vite`
+(per-process Vite configs: `vite.main.config.ts`, `vite.preload.config.ts`, `vite.renderer.config.ts`)
+and the `@qvac/sdk/electron-forge` plugin, which tree-shakes unused `@qvac/*` native addons and
+non-target prebuilds at package time (hosts pinned in `forge.config.js`). `asar` is forced **off** by
+that plugin (the QVAC Bare worker can't load addons from inside an asar), so natives ship loose in
+`node_modules`; `forge.config.js`'s custom `ignore` keeps `.vite` + `package.json` + `node_modules`.
+Output goes to `.vite/` (bundles) and `out/` (packaged app). There is no auto-updater.
 
 There is **no test runner configured** — no test script, framework, or test files exist.
 

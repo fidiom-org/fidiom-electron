@@ -56,7 +56,7 @@ export const AuthPage = () => {
             F
           </div>
           <h1 className="text-xl font-semibold">
-            {creating ? 'Create your master key' : 'Unlock Fidiom'}
+            {creating ? 'Create your master key' : 'Unlock Fibiom'}
           </h1>
           <p className="mt-1 text-sm text-zinc-500">
             {creating
